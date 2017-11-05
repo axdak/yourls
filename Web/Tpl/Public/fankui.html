@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>建议反馈 - {$GLOBALS['cfg_webname']}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{$GLOBALS.description}" />
+	<meta name="keywords"  content="{$GLOBALS.keywords}" />
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/User/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+	<div class="container">
+ 	<div class="row">
+ 		<div class="span12">
+ 			<div class="page-header">
+  				<h3>建议反馈</h3>
+			</div>
+ 			<div  style="margin-top: 20px;">
+				<!--start of feedback code powered by geekui-->
+<script type="text/javascript" src="http://geekui.com/static/js/widgets.js"></script>
+<script type="text/javascript" charset="utf-8">
+	var options = {};
+	options.product_sub_url = "dwz";
+	options.company_sub_url = "dwz";
+	options.display = "inline";
+	var feedback_widget = new GKFN.feedback_widget(options);
+</script>
+<!--end of feedback code powered by geekui-->
+			</div>
+			</div>
+	</div>
+</div>
+<include file="Public:footer"/>
+	</body>
+</html>
+

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{$GLOBALS['cfg_webname']}-网址管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/Admin/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+    <div class="container-fluid">
+      <div class="row-fluid">
+		<div class="span12">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a class="brand" href="{:U('User/myfile')}">用户资料</a>
+					<ul class="nav">
+		<li ><a href="{:U('User/myfile')}">预览资料</a></li>
+		<li><a href="{:U('User/myfile?edit=base')}">修改资料</a></li>
+		<li><a href="{:U('User/myfile?edit=password')}">密码安全</a></li>
+		<li><a href="{:U('User/site')}">网址管理</a></li>
+		<li><a href="{:U('User/fenxi')}">统计分析</a></li>
+		<?php if(session('uid')==1):?><li><a href="{:U('User/fenxiall')}">全局统计分析</a></li><?php endif;?>
+		<eq name="GLOBALS.addallurloff" value='1'><li><a href="{:U('User/addall')}">批量添加</a></li></eq>
+		<li class="active"><a href="{:U('User/update')}">套餐升级</a></li>
+		<li ><a href="{:U('User/domain')}">域名绑定</a></li>
+		</ul>
+				</div>
+			</div>
+		</div>
+        <div  style='border:1px solid #ccc;margin-bottom:10px;'>
+		<div style="padding:20px">
+		 <h4>当前套餐基本信息</h4><hr>
+		 <table class="table table-bordered table-hover">
+		 <tr><td>套餐名称</td><td>{$glist['rankname']}</td></tr>
+		 <tr><td>套餐可生成短网址数量</td><td><eq name="glist.rankmoney" value="0">无限制<else/>{$glist['rankmoney']}</eq></td></tr>
+		 <tr><td>套餐内已生成短网址数量</td><td>{$snum}</td></tr>
+		 <tr><td>套餐内可创建短网址数量</td><td><eq name="glist.rankmoney" value="0">无限制<else/>{$gsnum}</eq></td></tr>
+		 </table>
+		 <h4>套餐计划对比</h4><hr>
+		  <table class="table table-bordered table-hover">
+		 <tr><th>套餐名称</th><th>可生成短地址数量（个）</th><th>统计分析</th><th>顶级域名绑定</td></tr>
+		<volist name="list" id="vo">
+		<tr><td>{$vo.rankname}</td><td><?php if($vo['groupid']>1):echo '无限制';else:?>{$vo.rankmoney}<?php endif;?></td><td><font color=green>支持（<?php if($vo['groupid']>1):echo '无限制';else:?>{$vo.rankmoney}条<?php endif;?>）</font></td><td><eq name="vo.rankimg" value='2'><font color=green>支持（<?php if($vo['groupid']>1):echo '无限制';else:?>{$vo.rankmoney}条<?php endif;?>）</font><else/><font color=red>不支持</font></eq></td></tr>
+		</volist>
+		 </table>
+		  <h4>套餐升级</h4><hr>
+		  <p>请联系管理员升级您的套餐方案！</p>
+		</div></div>
+	 </div>
+   <include file="Public:footer"/>
+    </div>
+  </body>
+</html>
+<script charset="utf-8" src="__PUBLIC__/Common/Jquery/Jquery.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script>  

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{$GLOBALS['cfg_webname']}-网址管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/Admin/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+    <div class="container-fluid">
+      <div class="row-fluid">
+		<div class="span12">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a class="brand" href="{:U('User/myfile')}">用户资料</a>
+					<ul class="nav">
+		<li ><a href="{:U('User/myfile')}">预览资料</a></li>
+		<li><a href="{:U('User/myfile?edit=base')}">修改资料</a></li>
+		<li><a href="{:U('User/myfile?edit=password')}">密码安全</a></li>
+		<li><a href="{:U('User/site')}">网址管理</a></li>
+		<li><a href="{:U('User/fenxi')}">统计分析</a></li>
+		<?php if(session('uid')==1):?><li><a href="{:U('User/fenxiall')}">全局统计分析</a></li><?php endif;?>
+		<eq name="GLOBALS.addallurloff" value='1'><li class="active"><a href="{:U('User/addall')}">批量添加</a></li></eq>
+		<li><a href="{:U('User/update')}">套餐升级</a></li><li><a href="{:U('User/domain')}">域名绑定</a></li>
+		</ul>
+				</div>
+			</div>
+		</div>
+        <div  style='border:1px solid #ccc;margin-bottom:10px;'>
+		<div style="padding:20px">
+		 <h4>临时网址管理<span style="float:right;"><a href="{:U('User/addall')}" class="btn">批量添加</a></span></h4><hr>
+		<form name="myform" id="myform" action="{:U('User/delall')}" onsubmit="return checkselectId()" method="post">
+		<table class="table table-hover table-bordered">
+
+		<tr>
+		<th width="8%">批处理</th>
+		<th  style="overflow:hidden;">源地址</th>
+		<th width="10%">短地址</th>
+		<th width="15%">备注</th>
+		<th width="10%">生成时间</th>
+		<th width="15%">操作</th>
+		</tr>
+
+		<volist name="list" id="vo">
+		<tr>
+		<td ><input type="checkbox" name="id[]" class='ids' value="{$vo.id}" onClick="unselectall(this.form)"/></td>
+		<td ><p style="width:200px;overflow:hidden;"><a href="{$vo.longurl}" target='_blank'>{$vo.longurl}</a></p></td>
+		<td ><a href="{:parseDomain()}{$vo.tinyurl}" target='_blank'>{:parseDomain()}{$vo.tinyurl}<notempty name="GLOBALS.suffix">.{$GLOBALS['suffix']}</notempty></a></td>
+		<td><empty name="vo.beizhu">无备注信息<else/>{$vo.beizhu}</empty></td>
+		<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+		<td><eq name="vo.type" value='1'><a href="javascript:;" onclick="$.dialog.tips('当前短网址解析正常！');" title="解析正常"><i class="icon-ok-circle"></i></a><else/><a href="javascript:;" onclick="show_error();"><i class="icon-ban-circle"></i></a></eq><eq name="GLOBALS.linkcodeoff" value='1'>&nbsp;<notempty name="vo.pwd"><a href="javascript:;" onclick="$.dialog.alert('当前短网址已加密！');" title="已加密"><i class="icon-lock"></i></a><else/><a href="javascript:;" onclick="$.dialog.tips('当前短网址未加密！');" title="未加密"><i class="icon-folder-open"></i></a></notempty>&nbsp;</eq><eq name="GLOBALS.erweimaoff" value='1'><a href="javascript:;" onclick="erweima('{$vo.longurl}','{:parseDomain()}{$vo.tinyurl}','{$vo.tinyurl}');" title="二维码" ><i class="icon-qrcode"></i></a>&nbsp;</eq></td>
+		</tr>
+		</volist>
+		<tr>
+		<td colspan="8">
+		<input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAll(this.form)" value="checkbox">&nbsp;&nbsp;全选 &nbsp;&nbsp;
+		<input name="Del" type="submit" class="btn btn-primary btn-mini" id="Del" value="认领" onclick="alertcheck()">&nbsp;&nbsp;
+		</td>
+		</tr>
+
+		</table>
+		</form>
+		</div></div>
+	 </div>
+   <include file="Public:footer"/>
+    </div>
+  </body>
+</html>
+<script charset="utf-8" src="__PUBLIC__/Common/Jquery/Jquery.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script> 
+<script charset="utf-8" src="__PUBLIC__/Common/Jquery/jquery.zclip.min.js"></script>	
+	<script>
+	function copyToClipboard(meintext) {
+	
+        if (window.clipboardData) {
+            window.clipboardData.setData("Text", meintext);
+			$.dialog.tips('复制成功！');
+        }
+        else
+		{
+			var xdialog = art.dialog({
+				init:function(){
+					$('#copyurl').zclip({
+						path:'__PUBLIC__/Common/Jquery/ZeroClipboard.swf',
+						copy:meintext,
+						setCSSEffects:false,
+						afterCopy:function(){
+							xdialog.close();
+							$.dialog.tips('复制成功！');
+						}
+					});
+				},
+				content:'<div class="well" ><button class="btn btn-large" id="copyurl" type="button">复制到剪切版</button></div>',
+				title: false,
+				cancel: false,
+				fixed: true,
+				lock: false,
+				button:[
+				{
+					name: '关闭'
+				}
+				]
+			});
+		}
+
+    }
+function docopy(id,content)
+{
+	$(id).click(function(){
+		copyToClipboard(content);
+	});
+}
+	function unselectall(thisform){
+        if(thisform.chkAll.checked){
+            thisform.chkAll.checked = thisform.chkAll.checked&0;
+        }   
+    }
+    function CheckAll(thisform){
+        for (var i=0;i<thisform.elements.length;i++){
+            var e = thisform.elements[i];
+            if (e.Name != "chkAll"&&e.disabled!=true)
+                e.checked = thisform.chkAll.checked;
+        }
+    }
+	function alertcheck()
+	{
+		if(checkselectId()==false)
+		{
+			$.dialog.alert('请勾选ID记录!');
+		}
+	}
+	function checkselectId()
+	{
+	var ch =  $('.ids');
+	var input = '';
+	for(var i=0; i<ch.length;i++)
+	{
+		if(ch[i].checked == true)
+		{
+			input += ch[i].value+',';
+		}       
+	}
+	if(input=='') return false;
+	return input;
+   } 
+   function erweima(longurl,url)
+   {
+		url = url + '<notempty name="GLOBALS.suffix">.{$GLOBALS['suffix']}</notempty>';
+		base  = '<img src="http://chart.apis.google.com/chart?cht=qr&&chs=200x200&chl='+url+'" /><br><p>源地址: <a href="'+longurl+'" target="_blank" style="width:200px;overflow:hidden;">'+longurl+'</a></p>';
+		var sharedata = '<a target="_blank" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+url+'&desc=我在{$GLOBALS['cfg_webname']}上生成了一个短网址，欢迎使用哦！&summary={$GLOBALS['cfg_webname']}&site={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/miniqq.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://service.weibo.com/share/share.php?url='+url+'"><img src="__PUBLIC__/User/img/miniweibo.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://share.v.t.qq.com/index.php?c=share&a=index&url='+url+'&title={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minitencent.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://widget.renren.com/dialog/share?resourceUrl='+url+'&title={$GLOBALS['cfg_webname']}&description={$GLOBALS.description}"><img src="__PUBLIC__/User/img/minirenren.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://t.163.com/article/user/checkLogin.do?info='+url+'&title={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minit163.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://shuo.douban.com/!service/share?href='+url+'&name={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minidouban.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://www.diandian.com/share?lo='+url+'&ti={$GLOBALS['cfg_webname']}&type=link"><img src="__PUBLIC__/User/img/minidiandian.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://tieba.baidu.com/f/commit/share/openShareApi?url='+url+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minibaidu.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://share.jianghu.taobao.com/share/addShare.htm?url='+url+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minitaobao.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://t.sohu.com/third/post.jsp?url='+url+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minisohu.png"/></a>&nbsp;';
+		art.dialog({
+		title: '生成结果',
+		init:function(){
+		docopy("a[cid='tinyurl']",url);
+		},
+		content: '<div class="well">'+base+'<p >短地址：<a href="javascript:;" cid="tinyurl" >'+ url+'</a>&nbsp;<a href="javascript:;" cid="tinyurl" class="btn btn-mini">复制</a></p><p>分享到：'+sharedata+'</p></div>',
+		okVal:'下载二维码',
+		ok: function () {
+    	$.dialog.tips('正在转向...');
+        window.location.href='{:U('Public/downfile?url=')}'+url;
+        return false;
+		},
+		cancelVal: '关闭',
+		cancel: true,
+		lock: true
+		});
+   }
+   function show_error()
+   {
+		$.dialog.alert('当前网址出于禁止解析状态，请联系管理员解禁！');
+	}
+	function jconfirm(str,url)
+{
+   $.dialog.confirm(str,function (){window.location.href=url;});
+}
+
+var _svq_ = _svq_ || [];
+	_svq_.push(['set_api_key', '16adflfafads9gf28327005056b68c3d']);
+	_svq_.push(['set_nopopup_class', '-sv-no-popup']); 
+	_svq_.push(['check_page']);
+	(function(){   
+		var aq = document.createElement('script');
+		aq.type = 'text/javascript'; 
+		aq.async = true;   
+		aq.charset = 'utf-8';
+		aq.src = 'http://openapi.anquan.org/static/aq.js';    
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(aq, s); 
+	})();
+	</script>

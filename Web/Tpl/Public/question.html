@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>常见问题 - {$GLOBALS['cfg_webname']}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{$GLOBALS.description}" />
+	<meta name="keywords"  content="{$GLOBALS.keywords}" />
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/User/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+	<div class="container">
+ 	<div class="row">
+ 		<div class="span12">
+			<div class="page-header">
+  				<h3>常见问题</h3>
+			</div>
+			<div>
+			<h5>我有想要的功能，你们可以帮忙实现吗？</h5>
+			<p><?php echo BASEHOST;?> 致力于成为国内 最创新、最易用、最可靠、最多用户 的第三方短网址服务商，会不断的推出创新的可靠服务，若你有好的建议可以给我们反馈或者发邮件，短网址更多妙用等你一起来挖掘。</p>
+			</div>
+			<h5>短网址被系统拦截该怎么办？</h5>
+			<p><?php echo BASEHOST;?>除了自身在建恶意网址数据库之外，系统还自动对接了各大安全服务商，恶意网址将被屏蔽以免造成不良影响。如果您生成的短网址出现误报的情况，请先联系对应的安全厂商解除屏蔽，再反馈给我们，<?php echo BASEHOST;?>也将人工解除屏蔽。</p>
+			<ol>
+<li><a target="_blank" href="http://www.scanv.com/seccenter/appeal/">SCANV申诉入口</a></li>
+<li><a target="_blank" href="http://fish.ijinshan.com/Kws/appeal">金山安全申诉入口</a></li>
+<li>其他申诉渠道： <a target="_blank" href="http://guanjia.qq.com/complaint.html">QQ电脑管家</a> | <a target="_blank" href="http://wd.360.cn/appeal/appeal.html">360安全中心</a></li>
+</ol>
+<h5><?php echo BASEHOST;?>是否允许邮件群发？</h5>
+<?php echo BASEHOST;?>不允许大量访客在邮件中点击短网址。我们对使用垃圾邮件推广<?php echo BASEHOST;?>缩短的网址零容忍，在邮件中打开过多将触发屏蔽。 当然，朋友之间邮件分享短网址是完全没问题的。
+		</div>
+	</div>
+</div>
+<include file="Public:footer"/>
+	</body>
+</html>
+

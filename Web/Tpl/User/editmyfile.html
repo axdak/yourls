@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{$GLOBALS['cfg_webname']}-用户资料</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+	<link href="__PUBLIC__/Editor/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/Admin/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+    <div class="container-fluid">
+      <div class="row-fluid">
+		<div class="span12">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a class="brand" href="{:U('User/myfile')}">用户资料</a>
+					<ul class="nav">
+				<li><a href="{:U('User/myfile')}">预览资料</a></li>
+		<li  class="active"><a href="{:U('User/myfile?edit=base')}">修改资料</a></li>
+		<li><a href="{:U('User/myfile?edit=password')}">密码安全</a></li>
+		<li><a href="{:U('User/site')}">网址管理</a></li>
+		<li><a href="{:U('User/fenxi')}">统计分析</a></li>
+		<?php if(session('uid')==1):?><li><a href="{:U('User/fenxiall')}">全局统计分析</a></li><?php endif;?>
+		<eq name="GLOBALS.addallurloff" value='1'><li><a href="{:U('User/addall')}">批量添加</a></li></eq>
+		<li><a href="{:U('User/update')}">套餐升级</a></li><li><a href="{:U('User/domain')}">域名绑定</a></li>
+		</ul>
+				</div>
+			</div>
+		</div>
+        <div  style='border:1px solid #ccc;padding-top:20px;margin-bottom:10px;'>
+		<div style="padding:10px">
+		<form class="form-horizontal" name="UserReg" action="{:U('User/doeditmyfile')}" onsubmit="return CheckForm()" method="post">
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">用户名</label>
+			<div class="controls">
+				{$list.username}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">邮箱</label>
+			<div class="controls">
+				{$list.email}
+			</div>
+		</div>
+		<div class="control-group" style="display:none;">
+			<label class="control-label" for="inputEmail">上传头像</label>
+			<div class="controls">
+				<input type="text" name="avtar" id="avtar"/> &nbsp;&nbsp;<input type='button' id='50e5974b00984' class='btn' value='选择图片'/>
+			</div>
+		</div>
+		<div class="control-group" style="display:none;">
+			<label class="control-label" for="inputEmail">预览头像</label>
+			<div class="controls" id="preavtar">
+				<img src="<empty name='list.avtar'>__PUBLIC__/User/img/avtar_big.jpg<else/>{$list.avtar}</empty>" style="width:100px;height:100px"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">性别</label>
+			<div class="controls">
+				<select name="sex" id="sex">
+				<option value='0' <eq name="list.sex" value='0'>select='selected'</eq>>女</option>
+				<option value='1' <eq name="list.sex" value='1'>select='selected'</eq>>男</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">生日</label>
+			<div class="controls">
+				<script type="text/javascript" src="__PUBLIC__/Admin/setdate/WdatePicker.js"></script>
+				<input name='birthday' value="{$list.birthday}" id="birthday" type='text' class="borderall" onFocus="WdatePicker({isShowClear:false,readOnly:true,startDate:'1988-01-23',minDate:'1960-01-01',maxDate:'2012-12-31',skin:'whyGreen'})"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">籍贯</label>
+			<div class="controls">
+				<select onChange="setcity();" name='province' id="province">
+    <option value=''>请选择省份</option>
+    <option value="广东">广东</option>
+    <option value="北京">北京</option>
+    <option value="重庆">重庆</option>
+    <option value="福建">福建</option>
+    <option value="甘肃">甘肃</option>
+    <option value="广西">广西</option>
+    <option value="贵州">贵州</option>
+    <option value="海南">海南</option>
+    <option value="河北">河北</option>
+    <option value="黑龙江">黑龙江</option>
+    <option value="河南">河南</option>
+    <option value="香港">香港</option>
+    <option value="湖北">湖北</option>
+    <option value="湖南">湖南</option>
+    <option value="江苏">江苏</option>
+    <option value="江西">江西</option>
+    <option value="吉林">吉林</option>
+    <option value="辽宁">辽宁</option>
+    <option value="澳门">澳门</option>
+    <option value="内蒙古">内蒙古</option>
+    <option value="宁夏">宁夏</option>
+    <option value="青海">青海</option>
+    <option value="山东">山东</option>
+    <option value="上海">上海</option>
+    <option value="山西">山西</option>
+    <option value="陕西">陕西</option>
+    <option value="四川">四川</option>
+    <option value="安徽">安徽</option>
+    <option value="台湾">台湾</option>
+    <option value="天津">天津</option>
+    <option value="新疆">新疆</option>
+    <option value="西藏">西藏</option>
+    <option value="云南">云南</option>
+    <option value="浙江">浙江</option>
+    <option value="海外">海外</option>
+  </select> <select name='city' id="city"></select><script charset="utf-8" src="__PUBLIC__/Admin/js/getcity.js"></script><script>initprovcity('{$list.province}','{$list.city}');</script>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">QQ</label>
+			<div class="controls">
+				<input type="text" value="{$list.qq}" name="qq" id="qq" placeholder="QQ号码.."/>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				 <if condition="$GLOBALS['verifyoff'] neq 1"><button type="submit" class="btn btn-primary btn-large ">提交</button>&nbsp;&nbsp;
+				<button type="button" class="btn btn-inverse  btn-large" onclick="history.go(-1)">返回</button><else/><button type="button" class="btn btn-primary btn-large" onclick="YXM_popBox(this,'');">提交</button>
+				&nbsp;&nbsp;
+				<button type="reset" class="btn btn-inverse btn-large">重置</button></if>
+			</div>
+		</div>
+		<input type='hidden' name='id' value="{$list.id}"/>
+		</form>
+		</div>
+		</div>
+      
+
+	 </div>
+
+    <include file="Public:footer"/>
+
+    </div>
+	<script charset="utf-8" src="__PUBLIC__/Common/Jquery/Jquery.js"></script>
+	<script charset="utf-8" src="./Public/Editor/kindeditor/kindeditor-min.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script>  
+<script charset="utf-8" src="./Public/Editor/kindeditor/lang/zh_CN.js"></script>
+<script>
+<if condition="$GLOBALS['verifyoff'] eq 1">
+ var YXM_switch_key = 1;var YXM_PUBLIC_KEY = 'e491033892fbb0b74b58cd2c37efeeaf';
+document.write("<input type='hidden' id='YXM_here' /><script type='text/javascript' charset='gbk' id='YXM_script' src='http://api.yinxiangma.com/api3/yzm.yinxiangma.php?pk="+YXM_PUBLIC_KEY+"&v=YinXiangMaJsSDK_4.0'><"+"/script>");
+function YXM_valided_true()
+{
+	$("form:first").submit();
+}
+function YXM_valided_false()
+{
+	art.dialog.alert('验证失败，请重试！');
+}
+</if>
+function show(obj){
+obj.src="{:U('Public/verify?random=1')}"+ Math.random();
+}
+	KindEditor.ready(function(K) { 
+	var editor = K.editor({ allowFileManager : false,removeSize:true,removeAlign:true,removeTitle:true,resizeImage:true,userAllowUpload:true}); 
+	K('#50e5974b00984').click(function() {
+	editor.loadPlugin('image', function() 
+	{ 
+	editor.plugin.imageDialog({ 
+	imageUrl :'', 
+	clickFn : function(url,title) 
+	{ 
+		K("#avtar").val(url);
+		K("#preavtar").html("<img src='"+url+"' width='100px' height='100px'/>");
+		editor.hideDialog(); 
+	} 
+	});
+	}); 
+	}); 
+	});
+	function CheckForm()
+	{ 
+		if(EmptyCheckForm('birthday','生日不能为空!',''))return false;
+		if(EmptyCheckForm('province','省份不能为空!',''))return false;
+		if(EmptyCheckForm('city','城市不能为空!',''))return false;
+		if(QQCheckForm('qq','qq号码不正确!'))return false;
+		//if(EmptyCheckForm('verify','验证码不能为空!',''))return false;
+	}
+	function EmptyCheckForm(id,value,set)
+	{
+		if($('#'+id).val()==set)
+		{
+			$.dialog({icon:'warning',content:value,ok:function(){ $('#' + id).focus();}});return true;
+		}
+		return false;
+	}
+	function QQCheckForm(id,msg)
+	{ 
+		var szReg=/^[1-9][0-9]{4,12}$/; 
+		Mail = $('#'+id).val();
+		if(szReg.test(Mail)==false)
+		{
+			$.dialog({icon:'warning',content:msg,ok:function(){ $('#' + id).focus();}});return true;
+		}
+		return false;
+	} 
+</script>
+  </body>
+</html>

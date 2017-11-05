@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+	<title>{$GLOBALS['cfg_webname']}--短网址批量生成</title>
+	<style>
+	a img{border:0}
+	h2{margin:0; padding:5px; margin-top: 10px; _margin-bottom:-21px; font-weight: 200; _height:34px; overflow: hidden; background: url(__PUBLIC__/User/img/soft/subtitle.gif) no-repeat; }
+	h2 small{font-size: 12pt; margin-left: 5px;}
+	body{font-size:12px; margin:0; padding:0; font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;}
+	#multiurl{height:264px; width:579px;border:2px #BABABA solid; overflow:auto; margin:0 0 0 5px;}
+	.btn{width:95px;height:32px;padding:0;padding-top:2px 9;border:0;background:#DDD url(__PUBLIC__/User/img/soft/btn.png) no-repeat;cursor:pointer;font-size:14px; margin-left: 20px;}
+	.button{width:124px;height:35px;padding:0;padding-top:2px 9;border:0; background:#FFF url(__PUBLIC__/User/img/soft/button.gif) no-repeat;cursor:pointer;font-size:14px; margin-left: 5px;}
+	.button.on{background-position:0 -35px;}
+	.button.down{background-position:0 -70px;}
+	.btn_h{background-position:-100px 0;}
+	.ptar{padding:0;margin:5px 0;}
+	html,body{overflow:hidden;  border: 0px;}
+	.update{float:right}
+	#header{background: #4EA6EA;}
+	</style>
+	<script>
+	function luxian(ev){
+		ev = window.event || ev;
+		var tagName = ev.srcElement.tagName.toUpperCase();
+		return(tagName=='TEXTAREA' || tagName=='INPUT');
+	}
+	</script>
+</head>
+<body oncontextmenu="return luxian(event)">
+	<div id="header"><a href="{:getroot(1)}" target="_blank" class="update"><img src="__PUBLIC__/User/img/soft/update.gif" /></a><img src="__PUBLIC__/User/img/soft/logo.gif" /></div>
+	<h2>&nbsp;</h2>
+	<form method="post" action="__SELF__">
+	<textarea id="multiurl" type="text" name="multiurl" placeholder="一行一个网址">{$list}</textarea>
+	<p class="ptar"><input type="submit" value="" id="sc" class="button" onmouseover="this.className='button on'" onmouseout="this.className='button'" onmousedown="this.className='button down'"></p>
+	</form>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{$GLOBALS['cfg_webname']}  - 提供网址缩短工具和批量短网址生成服务</title>
+	{$GLOBALS['qqcode']}{$GLOBALS['weibocode']}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{$GLOBALS.description}" />
+	<meta name="keywords"  content="{$GLOBALS.keywords}" />
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+.marketing {
+  text-align: center;
+  color: #5a5a5a;
+  padding-bottom: 100px;
+  cursor: pointer;
+}
+.marketing h1 {
+  margin: 60px 0 10px;
+  font-size: 40px;
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.marketing h2 {
+  font-weight: 200;
+  margin-bottom: 5px;
+}
+.marketing p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.marketing .marketing-byline {
+  margin-bottom: 40px;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.25;
+  color: #999;
+}
+.marketing-img {
+  display: block;
+  margin: 0 auto 30px;
+  max-height: 145px;
+}
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/User/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+    <div class="container">
+     <div class="row">
+    		<div class="span6 offset3" style="text-align:center;padding:40px;"><img src="./Public/User/diy/logo.png" ></div>
+    	</div>
+		<div class="row">
+    		<div class="span6 offset3">
+    			<form cclass="form-search" onsubmit="return false;">
+  					<div class="input-append">
+						<input name="rawurl" id="rawurl" type="text" class="span6   input-search-large" placeholder="输入您的网址">
+						<div class="btn-group">
+							<button type="button" id="submit" tabindex="-1" class="btn btn-success"> 缩短 </button>
+							<button id="advoption1" class="btn dropdown-toggle btn-success" data-toggle="dropdown" tabindex="-1">
+								<span class="caret"></span>
+							</button>
+							<button id="advoption2" class="btn dropdown-toggle btn-success" data-toggle="dropdown" tabindex="-1" style="display:none">
+								<span class="caret"></span>
+							</button>
+						</div>
+  					</div>
+				
+				<span style="text-align:center;display:none;" id="checkbox">
+				<label class="checkbox inline">
+					<input type="checkbox"   disabled="disabled" checked> {$_SERVER['SERVER_NAME']}
+				</label>
+				<label class="checkbox inline">
+					<input type="checkbox"  cid='dwz' id='dwz' value="0"> dwz.cn
+				</label>
+				<label class="checkbox inline">
+					<input type="checkbox"  value="0" id="sina" cid='dwz'> t.cn
+				</label>
+				<label class="checkbox inline">
+					<input type="checkbox"  value="0" id='126am' cid='dwz'> 126.am
+				</label>
+				<label class="checkbox inline">
+					<input type="checkbox"  value="0" id='isgd' cid='dwz'> is.gd
+				</label>
+				<label class="checkbox inline">
+					<input type="checkbox"  value="0" id='955' cid='dwz'> 955.cc
+				</label>
+				<label class="checkbox inline">
+					<input type="checkbox" style="display:none" id='getallcheckbox2' checked><input type="checkbox"  id='getallcheckbox'> 全选
+				</label>
+				</span>
+				</form>
+				<dwz:label id='3'/>
+    		</div>
+    	</div>
+</div>
+<if condition="USER_LOGINED==false && 1==2">
+		<hr>
+    <div class="container" id="feature" style="display:none">
+      <div class="marketing">
+            <h1>想要更加强大的功能？</h1>
+            <p class="marketing-byline">赶快来试试高级功能吧！</p>
+        <div class="row" id="feature1" style="display:none">
+            <div class="span3">
+                <img src="__PUBLIC__/User/css/yoururl.gif" class="img-rounded">
+                <h2>指定短网址</h2>
+                <p>自定义短网址后缀,挑选一个”靓号“网址</p>
+            </div>
+            <div class="span3">
+                <img src="__PUBLIC__/User/css/tongji.gif" class="img-rounded">
+                <h2>查看访客统计数据</h2>
+                <p>想知道访客的来自哪个城市？每日ip，pv多少？赶快使用吧</p>
+            </div>
+            <div class="span3">
+                <img src="__PUBLIC__/User/css/lock.gif" class="img-rounded">
+                <h2>想给指定的人看？</h2>
+                <p>密码功能允许您的短网址给特定知道密码的人查看哦</p>
+            </div>
+            <div class="span3">
+                <img src="__PUBLIC__/User/css/visitlimits.gif" class="img-rounded">
+                <h2>二级域名访问？</h2>
+                <p>我们提供泛域名解析，你可以直接使用二级域名访问您的短网址。</p>
+            </div>
+            </div>
+            
+            <div class="row" id="feature2" style="display:none">
+            <div class="span3">
+                <img src="__PUBLIC__/User/css/visit.gif" class="img-rounded">
+                <h2>访问统计</h2>
+                <p>想知道你的短网址被人访问了多少次吗？直观的图表统计！</p>
+            </div>
+            <div class="span3">
+                <img src="http://chart.apis.google.com/chart?cht=qr&&chs=220x141&chl={:getroot()}" class="img-rounded">
+                <h2>二维码访问？</h2>
+                <p>我们生成的短网址均提供二维码访问，并且可以下载保存生成的二维码哦！</p>
+            </div>
+            <div class="span3">
+                <img src="__PUBLIC__/User/css/api.gif" class="img-rounded">
+                <h2>接口？</h2>
+                <p>肯定有，而且很早以前就已经有了。</p>
+            </div>
+            <div class="span3">
+                <img src="__PUBLIC__/User/css/note.gif" class="img-rounded">
+                <h2>备注您的短网址</h2>
+                <p>支持备注短网址，甚至是批量备注短网址！</p>
+            </div>            
+        </div>
+      </div>
+    </div>
+	</if>
+	</div>
+</div>
+<dwz:label id='1'/>
+<include file="Public:footer"/>
+  </body>
+  <script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/plugins/iframeTools.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/Jquery/jquery.zclip.min.js"></script>
+<script type="text/javascript">
+    function copyToClipboard(meintext) {
+	
+        if (window.clipboardData) {
+            window.clipboardData.setData("Text", meintext);
+			$.dialog.tips('复制成功！');
+        }
+        else
+		{
+			var xdialog = art.dialog({
+				init:function(){
+					$('#copyurl').zclip({
+						path:'__PUBLIC__/Common/Jquery/ZeroClipboard.swf',
+						copy:meintext,
+						setCSSEffects:false,
+						afterCopy:function(){
+							xdialog.close();
+							$.dialog.tips('复制成功！');
+						}
+					});
+				},
+				content:'<div class="well" ><button class="btn btn-large" id="copyurl" type="button">复制到剪切版</button></div>',
+				title: false,
+				cancel: false,
+				fixed: true,
+				lock: false,
+				button:[
+				{
+					name: '关闭'
+				}
+				]
+			});
+		}
+
+    }
+function docopy(id,content)
+{
+	$(id).click(function(){
+		copyToClipboard(content);
+	});
+}
+</script>
+<script type="text/javascript">
+function showfeature(){
+    $("#feature").slideToggle(1300,function(){
+        $("#feature1").fadeIn(1000);
+        $("#feature2").fadeIn(1000);
+    });
+}
+	$('#advoption1').click(function(){
+		$('#checkbox').show();
+		$('#advoption2').show();
+		$('#advoption1').hide();
+	});
+	$('#advoption2').click(function(){
+		$('#checkbox').hide();
+		$('#advoption1').show();
+		$('#advoption2').hide();
+	});
+	$('#getallcheckbox').click(function(){
+		$("input[cid='dwz']").attr('checked','checked');
+		$("input[cid='dwz']").attr('value',1);
+		$('#getallcheckbox').hide();
+		$('#getallcheckbox').attr('checked','checked');
+		$('#getallcheckbox2').show();
+	});
+	$('#getallcheckbox2').click(function(){
+		$("input[cid='dwz']").removeAttr('checked');
+		$("input[cid='dwz']").attr('value',0);
+		$('#getallcheckbox2').hide();
+		$('#getallcheckbox').removeAttr('checked');
+		$('#getallcheckbox').show();
+	});
+	$("input[cid='dwz']").click(function(){
+		if($(this).attr('checked')=='checked')
+		{
+			$(this).attr('value',1);
+		}
+		else
+		{
+			$(this).attr('value',0);
+		}
+	});
+document.onkeydown = function (e) { 
+  var theEvent = window.event || e; 
+  var code = theEvent.keyCode || theEvent.which; 
+  if (code == 13) { 
+    $("#submit").click();
+  } 
+  
+  
+}  
+
+$(document).ready(function(){
+ setTimeout(showfeature,400);
+        $("#feature").click(function(){
+            window.location.href="{:U('User/myfile')}";
+        });
+$('#submit').click(function(){
+art.dialog.tips('正在为您缩短...',60);
+var longurl = $('#rawurl').val();
+if(longurl=='')
+{
+	art.dialog.tips('网址缩短失败！');
+	art.dialog.alert('网址内容不能为空!');
+}
+else
+{
+	
+	 var data = { url:longurl };
+		var post_url = '{:U('Index/create')}<eq name="GLOBALS.webapi" value='0'>&apicode=dwz{$GLOBALS.webapicode}</eq>';
+		$.ajax({
+        url:post_url,
+        type:'POST',
+        dataType:'json',
+        data:data,
+        success:handleGenUrl,
+        error:handleError
+    });
+}
+  
+});
+
+});
+
+function doapi()
+{
+	if($('#dwzapi').attr('data')!='')
+	{
+		$.post("{:U('Api/thirdapi?api=dwz')}", { url: $('#dwzapi').attr('data') },
+		function(data){
+			$('#dwzapi').html('百度短网址：<a href="'+data.tinyurl+'" target="_blank">'+data.tinyurl+'</a>&nbsp;<button cid="dwzapi" class="btn btn-mini">复制</button>');
+			docopy("button[cid='dwzapi']",data.tinyurl);
+		});
+	}
+	if($('#126amapi').attr('data')!='')
+	{
+		$.post("{:U('Api/thirdapi?api=126am')}", { url: $('#126amapi').attr('data') },
+		function(data){
+			$('#126amapi').html('网易短网址：<a href="http://'+data.url+'" target="_blank">'+data.url+'</a>&nbsp;<button cid="126amapi" class="btn btn-mini">复制</button>');
+			docopy("button[cid='126amapi']","http://"+data.url);
+		});
+	}
+	if($('#sinaapi').attr('data')!='')
+	{
+		$.post("{:U('Api/thirdapi?api=sina')}", { url: $('#sinaapi').attr('data') },
+		function(data){
+			$('#sinaapi').html('新浪短网址：<a href="'+data.urls[0].url_short+'" target="_blank">'+data.urls[0].url_short+'</a>&nbsp;<button cid="sinaapi" class="btn btn-mini">复制</button>');
+			docopy("button[cid='sinaapi']",data.urls[0].url_short);
+		});
+	}
+	
+		if($('#isgdapi').attr('data')!='')
+	{
+		$.post("{:U('Api/thirdapi?api=isgd')}", { url: $('#isgdapi').attr('data') },
+		function(data){
+			$('#isgdapi').html('isgd短网址：<a href="'+data.shorturl+'" target="_blank">'+data.shorturl+'</a>&nbsp;<button cid="isgdapi" class="btn btn-mini">复制</button>');
+			docopy("button[cid='isgdapi']",data.shorturl);
+		});
+	}
+	
+	if($('#955api').attr('data')!='')
+	{
+		$.getJSON('http://955.cc/short/?url=' + encodeURIComponent($('#955api').attr('data')) + '&format=jsonp&callback=?',
+		function(data){
+			if(data.errno == 0) {
+			$('#955api').html('955短网址：<a href="'+data.url+'" target="_blank">'+data.url+'</a>&nbsp;<button cid="955api" class="btn btn-mini">复制</button>');
+			docopy("button[cid='955api']",data.url);
+			}
+		}
+		);
+	}
+}
+function handleGenUrl(msg)
+{
+    if (msg.status == -1)
+    {
+		art.dialog.tips('网址缩短失败！');
+        art.dialog.alert(msg.err_msg);
+    }
+    if (msg.tinyurl != undefined)
+    {
+		art.dialog.tips('网址缩短成功！');
+		msg.tinyurl = msg.tinyurl + '<notempty name="GLOBALS.suffix">.{$GLOBALS['suffix']}</notempty>';
+		var base ='';
+		var erweima = '{$erweima}';
+		if(erweima==1)
+		{
+			base  = '<img src="http://chart.apis.google.com/chart?cht=qr&&chs=200x200&chl='+msg.tinyurl+'" /><br><br>';
+		}
+		var thirdapi ='<p>';
+		if($('#dwz').attr('value')==1)
+		{
+			thirdapi  = thirdapi + '<span id="dwzapi" data='+msg.longurl+'>百度短网址：<img src="__PUBLIC__/User/img/wait.gif"/></span><br>';
+		}
+		if($('#126am').attr('value')==1)
+		{
+			thirdapi  = thirdapi + '<span id="126amapi" data='+msg.longurl+'>网易短网址：<img src="__PUBLIC__/User/img/wait.gif"/></span><br>';
+		}
+		if($('#sina').attr('value')==1)
+		{
+			thirdapi  = thirdapi + '<span id="sinaapi" data='+msg.longurl+'>新浪短网址：<img src="__PUBLIC__/User/img/wait.gif"/></span><br>';
+		}
+		if($('#isgd').attr('value')==1)
+		{
+			thirdapi  = thirdapi + '<span id="isgdapi" data='+msg.longurl+'>isgd短网址：<img src="__PUBLIC__/User/img/wait.gif"/></span><br>';
+		}
+		if($('#955').attr('value')==1)
+		{
+			thirdapi  = thirdapi + '<span id="955api" data='+msg.longurl+'>955短网址：<img src="__PUBLIC__/User/img/wait.gif"/></span><br>';
+		}
+		var sharedata = '<a target="_blank" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+msg.tinyurl+'&desc=我在{$GLOBALS['cfg_webname']}上生成了一个短网址，欢迎使用哦！&summary={$GLOBALS['cfg_webname']}&site={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/miniqq.png"/></a> ';
+		sharedata = sharedata +  '<a target="_blank" href="http://service.weibo.com/share/share.php?url='+msg.tinyurl+'"><img src="__PUBLIC__/User/img/miniweibo.png"/></a> ';
+		sharedata = sharedata +  '<a target="_blank" href="http://share.v.t.qq.com/index.php?c=share&a=index&url='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minitencent.png"/></a> ';
+		sharedata = sharedata +  '<a target="_blank" href="http://widget.renren.com/dialog/share?resourceUrl='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}&description={$GLOBALS.description}"><img src="__PUBLIC__/User/img/minirenren.png"/></a> ';
+		sharedata = sharedata +  '<a target="_blank" href="http://t.163.com/article/user/checkLogin.do?info='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minit163.png"/></a> ';
+		sharedata = sharedata +  '<a target="_blank" href="http://shuo.douban.com/!service/share?href='+msg.tinyurl+'&name={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minidouban.png"/></a> ';
+		sharedata = sharedata +  '<a target="_blank" href="http://www.diandian.com/share?lo='+msg.tinyurl+'&ti={$GLOBALS['cfg_webname']}&type=link"><img src="__PUBLIC__/User/img/minidiandian.png"/></a> ';
+		sharedata = sharedata +  '<a target="_blank" href="http://tieba.baidu.com/f/commit/share/openShareApi?url='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minibaidu.png"/></a> ';
+		sharedata = sharedata +  '<a target="_blank" href="http://share.jianghu.taobao.com/share/addShare.htm?url='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minitaobao.png"/></a> ';
+		sharedata = sharedata +  '<a target="_blank" href="http://t.sohu.com/third/post.jsp?url='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minisohu.png"/></a> ';
+		art.dialog({
+		title: '生成结果',
+		init:function(){
+		docopy("a[cid='tinyurl']",msg.tinyurl);
+		doapi();
+		},
+		content: '<div class="well well-large">'+base+'<p style="width:200px;overflow:hidden;">原始地址：<a href="'+msg.longurl+'" target="_blank">'+msg.longurl+'</a></p>'+thirdapi+'<p >短网址：<a href="'+ msg.tinyurl+'" target="_blank" >'+ msg.tinyurl+'</a> <a href="javascript:;" cid="tinyurl" class="btn btn-mini">复制</a></p><p>分享到：'+sharedata+'</p></div>',
+		okVal:'下载二维码',
+		ok: function () {
+    	$.dialog.tips('正在转向...');
+        window.location.href='{:U('Public/downfile?url=')}'+msg.tinyurl;
+        return false;
+		},
+		cancelVal: '关闭',
+		cancel: true,
+		lock: true
+		});
+    }
+}
+
+function handleError()
+{
+	art.dialog.tips('网址缩短失败！');
+	art.dialog.alert('内部错误，请重试!');
+}
+
+</script>
+</html>

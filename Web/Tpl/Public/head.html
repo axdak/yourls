@@ -1,0 +1,141 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+		<ul class="nav">
+		<a class="brand" href="__ROOT__/index.php"><?php echo $_SERVER['SERVER_NAME'];?></a>
+		</ul>
+        <div class="nav-collapse collapse">
+            <ul class="nav">
+			 <li><a href="{:getroot(1)}">首页</a></li>
+			  <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">关于我们 <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+				<li><a href="{:U('Public/about')}">关于我们</a></li>
+				<li><a href="{:U('Public/lianxi')}">联系我们</a></li>
+				<li><a href="{:U('Public/touzi')}">投资合作</a></li>
+				<li><a href="{:U('Public/union')}">安全联盟</a></li>
+				<li><a href="{:U('Public/link')}">友情链接</a></li>
+			  </ul>
+              </li>
+			  <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">使用帮助 <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+					<li><a href="{:U('Public/allhelp')}">使用帮助</a></li>
+					<li><a href="{:U('Public/productsets')}">套餐对比</a></li>
+					<li><a href="{:U('Public/download')}">软件下载</a></li>
+					<li><a href="{:U('Public/fankui')}">建议反馈</a></li>
+					<li><a href="{:U('Public/question')}">常见问题</a></li>
+					 <?php if($GLOBALS['feedbackset']==1):?><li><a href="{:U('Public/feedback')}">投诉意见</a></li><?php endif;?>
+			  </ul>
+              </li>
+				<li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">高级功能 <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+				<li>
+					<a href="{:U('Public/reurl')}">网址还原</a></li>
+					<li><a href="{:U('Api/addall')}">批量缩短</a></li>
+					<li><a href="{:U('Public/safecx')}">安全查询</a></li>
+					 <li class="divider"></li>
+					<li><a href="{:U('user/addurl')}">网址备注</a></li>
+					<li><a href="{:U('user/addurl')}">网址加密</a></li>
+					<eq name="GLOBALS.addallurloff" value='1'><li><a href="{:U('User/addall')}">批量添加</a></li></eq>
+					<li><a href="{:U('User/site')}">网址管理</a></li>
+					<li><a href="{:U('User/fenxi')}">统计分析</a></li>
+			  </ul>
+              </li>
+			  <if condition='USER_LOGINED == true'>
+			  <li><a href="{:U('User/myfile')}">我的个人中心</a></li>
+			  </if>
+            </ul>
+          </div>
+		  <?php if($GLOBALS['cfg_mb_open']==1):?>
+          <div class="nav-collapse collapse" >
+            <p class="navbar-text pull-right" style="height:auto;width:300px;text-align:right;">
+				<if condition='USER_LOGINED == true'>
+				欢迎您,
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,2))=='qq'):?><img src="__PUBLIC__/User/img/miniqq.png" alt='qq绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,4))=='sina'):?><img src="__PUBLIC__/User/img/miniweibo.png" alt='新浪微博绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,6))=='renren'):?><img src="__PUBLIC__/User/img/minirenren.png" alt='人人网绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,6))=='douban'):?><img src="__PUBLIC__/User/img/minidouban.png" alt='豆瓣网绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,5))=='baidu'):?><img src="__PUBLIC__/User/img/minibaidu.png" alt='百度绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,7))=='tencent'):?><img src="__PUBLIC__/User/img/minitencent.png" alt='腾讯微博绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,4))=='t163'):?><img src="__PUBLIC__/User/img/minit163.png" alt='网易微博绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,4))=='x360'):?><img src="__PUBLIC__/User/img/minitx360.png" alt='360绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,6))=='taobao'):?><img src="__PUBLIC__/User/img/minitaobao.png" alt='淘宝网绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,4))=='sohu'):?><img src="__PUBLIC__/User/img/minisohu.png" alt='搜狐网绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,6))=='kaixin'):?><img src="__PUBLIC__/User/img/minikaixin.png" alt='开心网绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,6))=='google'):?><img src="__PUBLIC__/User/img/minigoogle.png" alt='谷歌绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,3))=='msn'):?><img src="__PUBLIC__/User/img/minimsn.png" alt='MSN绑定用户'/>&nbsp;<?php endif;?>
+				<?php if(strtolower(substr($GLOBALS['member']['activekey'],0,8))=='diandian'):?><img src="__PUBLIC__/User/img/minidiandian.png" alt='点点绑定用户'/>&nbsp;<?php endif;?>
+				<a href="{:U('User/myfile')}" class="navbar-link">{$GLOBALS['member']['username']}</a>&nbsp;&nbsp;
+				<a href="{:U('Public/loginout')}" class="navbar-link">退出</a>
+				<else/>
+				<eq name="GLOBALS.qqloginoff" value='1'>
+				<a href="#myModal" data-toggle="modal"><img src="__PUBLIC__/User/img/qq_login.png" /></a>
+				</eq>&nbsp;&nbsp;
+				<a href="{:U('Public/login')}" class="navbar-link">请先登录</a>&nbsp;&nbsp;
+               <a href="{:U('Public/reg')}" class="navbar-link">注册</a>
+				</if> 
+            </p>
+          </div>
+		  <?php endif;?>
+        </div>
+      </div>
+    </div>
+	<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">请选择第三方登录</h3>
+  </div>
+  <div class="modal-body" style="text-align:center;">
+   
+				<ul class="thumbnails">
+					<eq name="GLOBALS['qqloginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=qq')}"  cid="login"><img src="__PUBLIC__/User/img/qq_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['tencentloginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=tencent')}" cid="login"><img src="__PUBLIC__/User/img/tencent_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['weibologinoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=sina')}" cid="login"><img src="__PUBLIC__/User/img/weibo_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['renrenloginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=renren')}" cid="login"><img src="__PUBLIC__/User/img/renren_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['taobaologinoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=taobao')}" cid="login"><img src="__PUBLIC__/User/img/taobao_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['baiduloginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=baidu')}" cid="login"><img src="__PUBLIC__/User/img/baidu_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['doubanloginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=douban')}" cid="login"><img src="__PUBLIC__/User/img/douban_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['t163loginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=t163')}" cid="login"><img src="__PUBLIC__/User/img/t163_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['x360loginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=x360')}" cid="login"><img src="__PUBLIC__/User/img/x360_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['sohuloginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=sohu')}" cid="login"><img src="__PUBLIC__/User/img/sohu_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['kaixinloginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=kaixin')}"  cid="login"><img src="__PUBLIC__/User/img/kaixin_login_big.png" /></a></li>
+			</eq>
+			
+			<eq name="GLOBALS['googleloginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=google')}" cid="login"><img src="__PUBLIC__/User/img/google_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['msnloginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=msn')}" cid="login" ><img src="__PUBLIC__/User/img/msn_login_big.png" /></a></li>
+			</eq>
+			<eq name="GLOBALS['diandianloginoff']" value='1'>
+				<li class="span2" ><a href="{:U('Index/login?type=diandian')}" cid="login"><img src="__PUBLIC__/User/img/diandian_login_big.png" /></a></li>
+			</eq>
+			</ul>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+  </div>
+</div>

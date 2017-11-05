@@ -1,0 +1,135 @@
+<?php
+	$domainmodel  = M('domain');
+	$domain = $domainmodel->where(array('uid'=>$GLOBALS['member']['id'],'status'=>1))->getField('domain');
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{$GLOBALS['cfg_webname']}-统计分析</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/Admin/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+    <div class="container-fluid">
+      <div class="row-fluid">
+		<div class="span12">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a class="brand" href="{:U('User/myfile')}">用户资料</a>
+					<ul class="nav">
+		<li ><a href="{:U('User/myfile')}">预览资料</a></li>
+		<li><a href="{:U('User/myfile?edit=base')}">修改资料</a></li>
+		<li><a href="{:U('User/myfile?edit=password')}">密码安全</a></li>
+		<li><a href="{:U('User/site')}">网址管理</a></li>
+		<li class="active"><a href="{:U('User/fenxi')}">统计分析</a></li>
+		<?php if(session('uid')==1):?><li><a href="{:U('User/fenxiall')}">全局统计分析</a></li><?php endif;?>
+		<eq name="GLOBALS.addallurloff" value='1'><li><a href="{:U('User/addall')}">批量添加</a></li></eq>
+		<li><a href="{:U('User/update')}">套餐升级</a></li><li><a href="{:U('User/domain')}">域名绑定</a></li>
+		</ul>
+				</div>
+			</div>
+		</div>
+        <div  style='border:1px solid #ccc;margin-bottom:10px;'>
+		<div style="padding:20px">
+		 <h4>总基础统计信息 <span style="float:right;"><a href="javascript:;" onclick="javascript:window.location.reload(true);" class="btn">刷新</a>&nbsp;<a href="javascript:;" onclick="javascript:history.go(-1)" class="btn">返回</a></span></h4><hr>
+		<table class="table table-bordered table-hover">
+		<tr><td>用户名</td><td><font color="red">{$GLOBALS['member']['username']}</font></td><td>套餐总数</td><td><font color=green>{$rankmoney}</font></td></tr>
+		<tr><td>短网址总计</td><td><font color="red">{$gnum}</font></td><td>套餐剩余可用</td><td><font color=green>{$snum}</font></td></tr>
+		<tr><td>总IP</td><td>{$totalip}</td><td>总PV</td><td>{$totalpv}</td></tr>
+		<tr><td>今日IP</td><td><font color="red">{$todayip}</font></td><td>昨日IP</td><td><font color="red">{$yesterdayip}</font></td></tr>
+		<tr><td>今日PV</td><td><font color="red">{$todaypv}</font></td><td>昨日PV</td><td><font color="red">{$yesterdaypv}</font></td></tr>
+		</table>
+		<ul class="nav nav-pills">
+  <li class="active">
+    <a href="{:U('User/fenxi?method=detail')}">总详细访问报表</a>
+  </li>
+  <li><a href="{:U('User/fenxi?method=daycount')}">24小时总统计分析图</a></li>
+  <li><a href="{:U('User/fenxi?method=weekcount')}">周总统计分析图</a></li>
+  <li><a href="{:U('User/fenxi?method=monthcount')}">月总统计分析图</a></li>
+</ul>
+ <h4>总详细追踪统计信息</h4><hr>
+		 <table class="table table-striped table-bordered">
+		<thead>
+		<tr>
+		<th width="10%">短地址</th>
+		<th width="35%">来路URL</th>
+		<th width="10%">IP地址</th>
+		<th width="25%">地理位置</th>
+		<th width="12%">访问时间</th>
+		<th width="8%">管理选项</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="list" id="vo"> 
+		<tr>
+		<empty name="domain">
+		<td><a href="{:U('User/vcount?url=')}{$vo.url}">{:parseDomain()}{$vo.url}<notempty name="GLOBALS.suffix">.{$GLOBALS['suffix']}</notempty></a></td>
+		<else/>
+		<td><a href="{:U('User/vcount?url=')}{$vo.url}">http://{$domain}/{$vo.url}<notempty name="GLOBALS.suffix">.{$GLOBALS['suffix']}</notempty></a></td>
+		</empty>
+		<td><notempty name="vo.cfrom"><a href="{$vo.cfrom}">{$vo.cfrom|cn_substr=###,0,80}</a><else/>浏览器直接访问/书签</notempty></td>
+		<td><a target="_blank" href="http://www.ip138.com/ips138.asp?ip={$vo.visitip}">{$vo.visitip}</a></td>
+		<td><span class="td" ip="{$vo.visitip}"><img src="__PUBLIC__/User/img/wait.gif"/></span></td>
+		<td>{$vo.visittime|date="Y-m-d H:i:s",###}</td><td><a href="{:U('User/vcount?url=')}{$vo.url}">追踪统计</a></td>
+		</tr>
+		</volist>
+		</tbody>
+		</table>
+		 <div class="pagination pagination-right"><ul>{$page}</ul></div>
+		</div></div>
+	 </div>
+   <include file="Public:footer"/>
+    </div>
+  </body>
+</html>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script>  
+<script>
+	$.dialog.tips('正在解析详细统计数据...',60);
+	function jconfirm(str,url)
+{
+   $.dialog.confirm(str,function (){window.location.href=url;});
+}
+	function parseip(remote_ip_info,ip){
+			if(remote_ip_info.ret=='-1')
+	{
+		$("span[ip='"+ip+"']").html('局域网地址');
+	}
+	else
+	{
+		var data = '';
+		if(remote_ip_info.country !='') data = remote_ip_info.country + ',';
+		
+		if(remote_ip_info.province !='') data = data + remote_ip_info.province + ',';
+		if(remote_ip_info.city !='') data = data + remote_ip_info.city + ',';
+		if(remote_ip_info.district !='') data = data + remote_ip_info.district + ',';
+		if(remote_ip_info.isp !='') data = data + remote_ip_info.isp + ',';
+		$("span[ip='"+ip+"']").html(data);
+	}
+	
+	}
+	</script>
+	<volist name="list" id="vo"> 
+	<script src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={$vo.visitip}"></script>
+	<script>
+	parseip(remote_ip_info,'{$vo.visitip}');
+	</script>
+	</volist>
+	<script>
+	$.dialog.tips('恭喜，已完成网址统计解析结果！',1);
+	</script>

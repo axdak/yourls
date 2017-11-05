@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>友情链接 - {$GLOBALS['cfg_webname']}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{$GLOBALS.description}" />
+	<meta name="keywords"  content="{$GLOBALS.keywords}" />
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/User/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+	<div class="container">
+ 	<div class="row">
+ 		<div class="span12">
+ 			<div class="page-header">
+  				<h3>友情链接</h3>
+			</div>
+ 			<div  style="margin-top: 20px;" class="well">
+				<dwz:flink row="10">
+				<field name="friendlink"/>&nbsp;
+				</dwz:flink>
+			</div>
+			<div class="page-header">
+  				<h3>链接合作</h3>
+			</div>
+			<div  style="margin-top: 20px;" class="well">
+			<h5>链接要求：</h5>
+			<br>
+			<ol>
+			<li>百度收录正常没有惩罚</li>
+			<li>网站上线超过三个月</li>
+			<li>网站内容正规合法健康</li>
+			</ol>
+			<h5>合作步骤：</h5>
+			<br>
+			<ol>
+			<li>添加 短网址 {:getroot(1)} 的合作链接</li>
+			<li>发 网站名称和网址 至 admin&shy;@&shy;<?php echo BASEHOST;?></li>
+			<li>本站收到邮件后 1小时内 在本页加上贵站位置并通知</li>
+			</ol>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="Public:footer"/>
+	</body>
+</html>
+

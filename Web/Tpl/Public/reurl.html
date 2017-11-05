@@ -1,0 +1,167 @@
+<?php 
+
+	$GLOBALS['info'][1] = '<div class="alert alert-error">亲！不是短网址或暂不支持还原。';
+    $GLOBALS['info'][2] = '';
+    $GLOBALS['info'][3] = '↓<br/><div class="alert alert-success">恭喜，还原成功！真实的地址为：<a href="';
+    $GLOBALS['info'][4] = '" target="_blank">';
+	$GLOBALS['info'][5] = '</a></div>';
+	$GLOBALS['info'][6] = '<div class="alert alert-error">亲！不是短网址或已失效。';
+    $GLOBALS['info'][7] = '<div class="alert alert-success">恭喜，还原成功！真实的地址为：<a href="';	
+	
+	function unshort($url)
+{
+	global $info;	 
+    $UrlHeader = (get_headers($url,1));	   
+    $UnurlHeader1 = $UrlHeader[Location];
+	$UnurlHeader2 = $UrlHeader[location];
+	if (!empty($UnurlHeader1)){
+	$unurl = $UnurlHeader1;
+	}
+	else {
+	$unurl = $UnurlHeader2;
+	}
+    if ($unurl==''){
+        echo $info[6];
+        }
+	else {
+	   if(is_array($unurl)) {
+	     $count_url = count($unurl);
+         if ($count_url>10) {          //一次性还原的至多跳转数
+           $count_url = 10;            //防止死循环
+		   }	
+		 for ($i=0;$i<$count_url;$i++){
+		   echo $info[3].$unurl[$i].$info[4].$unurl[$i].$info[5];
+		   }	
+		 }
+       else {				  
+         $unurl = $info[7].$unurl.$info[4].$unurl.$info[5];				  
+         echo $unurl;			   
+	    }
+       }	    
+}
+
+function adfunshort($url)
+{
+  global $info;
+  $c = file_get_contents($url);
+  list($version,$status_code,$msg) = explode(' ',$http_response_header[0], 3);
+  if ($status_code == '302') {
+  $unurl = unshort($url);
+  }
+  else{
+  $p = "/url = '(.*)';/isU";
+  preg_match($p, $c, $content);
+  $unurl = $content[1];  
+  $html = file_get_contents($unurl);  
+  list($version,$status_code,$msg) = explode(' ',$http_response_header[0], 3);
+    if ($status_code == '200') {
+     $d = file_get_contents($unurl);
+     $f = "/0; URL=(.*)\">/isU";
+     preg_match($f, $d, $content2);
+     $unurl = $content2[1];
+      if ($unurl==''){
+       echo $info[6];
+      }
+      else{
+      $unurl = $info[7].$unurl.$info[4].$unurl.$info[5];
+        echo $unurl;  
+      }
+    }   
+    else {
+     $unurl = unshort($unurl);
+    }
+  }
+}
+
+
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>网址还原-{$GLOBALS['cfg_webname']}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{$GLOBALS.description}" />
+	<meta name="keywords"  content="{$GLOBALS.keywords}" />
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/User/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+    <div class="container">
+     <div class="row">
+    		<div class="span6 offset3" style="text-align:center;padding:40px;"><img src="./Public/User/diy/logo.png" ></div>
+    	</div>
+		<div class="row">
+    		<div class="span6 offset3">
+    			<form class="form-search" method="POST" onsubmit="return check()" action="__SELF__">
+  					<div class="input-append">
+						<input name="turl" id="rawurl" type="text" class="span6  search-query input-search-large" placeholder="输入您的短网址,支持所有主流可以访问的任意短网址">
+						 <input type="hidden" name="url_done" value="done" />
+    					<button type="submit" id="submit" class="btn btn-success"> 还原 </button>
+  					</div>
+				</form>
+				
+				<div id="trurl">
+
+<?php
+//预处理开始
+$turl = trim($_POST['turl']);
+$url_done= $_POST['url_done'];
+global $info; 	 
+if ($url_done == 'done'){
+$http = substr($turl,0,7);
+   if ($http != 'http://' && $http != 'https:/'){
+     $turl = 'http://'.$turl;
+	 	 }
+   $tturl = substr($turl,0,11);
+   if ($tturl == 'http://adf.'){
+      echo $info[2];
+	  $longurl = adfunshort($turl);
+	  }
+   else {
+      echo $info[2];
+      $longurl = unshort($turl); 
+      }
+	 } 
+//预处理结束
+?>
+</div>
+    		</div>
+    	</div>
+		   
+	</div>
+</div>
+<include file="Public:footer"/>
+  </body>
+</html>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/plugins/iframeTools.js"></script>
+<script>
+function check()
+{
+var longurl = $('#rawurl').val();
+if(longurl=='')
+{
+	art.dialog.alert('网址内容不能为空!');return false;
+}
+else
+{
+	art.dialog.tips('正在为您还原...',60);return true;
+}
+}
+</script>
+

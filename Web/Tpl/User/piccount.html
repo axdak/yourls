@@ -1,0 +1,119 @@
+<?php
+if(isset($_GET['type']))
+{
+	$type = $_GET['type'];
+	$url = curPageURL();
+	$url = rtrim($url,'&type=line');
+	$url = rtrim($url,'&type=column');
+}
+else
+{
+	$type = 'line';
+	$url = curPageURL();
+} 
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{$GLOBALS['cfg_webname']}-网址管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+	<script src="__PUBLIC__/Admin/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+    <div class="container-fluid">
+      <div class="row-fluid">
+		<div class="span12">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a class="brand" href="{:U('User/myfile')}">用户资料</a>
+					<ul class="nav">
+		<li ><a href="{:U('User/myfile')}">预览资料</a></li>
+		<li><a href="{:U('User/myfile?edit=base')}">修改资料</a></li>
+		<li><a href="{:U('User/myfile?edit=password')}">密码安全</a></li>
+		<li><a href="{:U('User/site')}">网址管理</a></li>
+		<li class="active"><a href="{:U('User/fenxi')}">统计分析</a></li>
+		<?php if(session('uid')==1):?><li><a href="{:U('User/fenxiall')}">全局统计分析</a></li><?php endif;?>
+		<eq name="GLOBALS.addallurloff" value='1'><li><a href="{:U('User/addall')}">批量添加</a></li></eq>
+		<li><a href="{:U('User/update')}">套餐升级</a></li><li><a href="{:U('User/domain')}">域名绑定</a></li>
+		</ul>
+				</div>
+			</div>
+		</div>
+        <div  style='border:1px solid #ccc;margin-bottom:10px;'>
+		<div style="padding:20px">
+		 <h4>基础统计信息 <span style="float:right;"><a href="javascript:;" onclick="javascript:window.location.reload(true);" class="btn">刷新</a>&nbsp;<a href="javascript:;" onclick="javascript:history.go(-1)" class="btn">返回</a></span></h4><hr>
+		<table class="table table-bordered table-hover">
+		<tr><td>短地址</td><td><a href="{:parseDomain()}{$alias}{$urlinfo.tinyurl}" target='_blank'>{:parseDomain()}{$urlinfo.tinyurl}</a><eq name="GLOBALS.seconddomainoff" value='1'>
+		<eq name="rankimg" value='2'>
+		（域名访问：<a href="http://{$urlinfo.tinyurl}.{$_SERVER['SERVER_NAME']}" target="_blank">{$urlinfo.tinyurl}.{$_SERVER['SERVER_NAME']}</a>）
+		</eq>
+		</eq></td><td>源地址</td><td><a href="{$urlinfo.longurl}" target='_blank'>{$urlinfo.longurl|cn_substr=###,0,80}</a></td></tr>
+		<tr><td>生成时间</td><td><font color="red">{$urlinfo.addtime|date="Y-m-d H:i:s",###}</font></td><td>生成用户</td><td>{:cookie('uname')}</td></tr>
+		<tr><td>总IP</td><td>{$totalip}</td><td>总PV</td><td>{$totalpv}</td></tr>
+		<tr><td>今日IP</td><td><font color="red">{$todayip}</font></td><td>昨日IP</td><td><font color="red">{$yesterdayip}</font></td></tr>
+		<tr><td>今日PV</td><td><font color="red">{$todaypv}</font></td><td>昨日PV</td><td><font color="red">{$yesterdaypv}</font></td></tr>
+		</table>
+		<ul class="nav nav-pills">
+  <li>
+    <a href="{:U('User/vcount?method=detail&url=')}{$urlinfo.tinyurl}">详细访问报表</a>
+  </li>
+  <li <?php if($_GET['method']=='daycount'):?> class="active"<?php endif;?>><a href="{:U('User/vcount?method=daycount&url=')}{$urlinfo.tinyurl}">24小时统计分析图</a></li>
+  <li <?php if($_GET['method']=='weekcount'):?> class="active"<?php endif;?>><a href="{:U('User/vcount?method=weekcount&url=')}{$urlinfo.tinyurl}">周统计分析图</a></li>
+  <li <?php if($_GET['method']=='monthcount'):?> class="active"<?php endif;?>><a href="{:U('User/vcount?method=monthcount&url=')}{$urlinfo.tinyurl}">月统计分析图</a></li>
+</ul>
+		 <h4>{$counttitle}<span style="float:right;"><a href="{$url}&type=line"  class="btn <eq name="type" value="line"> btn-inverse</eq>" >线性图</a>&nbsp;<a href="{$url}&type=column" class="btn <neq name="type" value="line"> btn-inverse</neq>">柱形图</a></span></h4><hr>
+		 <table class="highchart" data-graph-container-before="1" data-graph-type="{$type}" style="display:none;">
+		  <caption>{$counttitle}</caption>
+		<thead>
+      <tr>
+          <th>时间</th>
+          <th>独立访问者ip</th>
+          <th>页面浏览量pv</th>
+      </tr>
+   </thead>
+   <tbody>
+	<volist name="countlist" id="vo">
+      <tr>
+          <td>{$vo.date}</td>
+          <td>{$vo.ip}</td>
+          <td>{$vo.pv}</td>
+      </tr>
+	</volist>
+  </tbody>
+</table>
+<script>
+$(document).ready(function() {
+  $('table.highchart').highchartTable();
+});
+</script>
+		</div></div>
+	 </div>
+   <include file="Public:footer"/>
+    </div>
+  </body>
+</html>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script>  
+	<script>
+	$.dialog.tips('正在解析详细统计数据...',60);
+	</script>
+	<script charset="utf-8" src="__PUBLIC__/Common/Jquery/highcharts.js"></script>  
+	<script charset="utf-8" src="__PUBLIC__/Common/Jquery/jquery.highchartTable.js"></script>  
+	<script>
+	$.dialog.tips('恭喜，已完成网址统计解析结果！',1);
+	</script>

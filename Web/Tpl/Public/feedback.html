@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>产品交流反馈--{$GLOBALS.cfg_webname}</title>
+	<link rel="shortcut icon" href="__PUBLIC__/Web/img/favicon.ico" type="image/x-icon" />
+	<meta name="description" content="{$GLOBALS.description}" />
+	<meta name="keywords"  content="{$GLOBALS.keywords}" />
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+	<link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+	<script src="__PUBLIC__/Admin/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Editor/kindeditor/kindeditor-min.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Editor/kindeditor/lang/zh_CN.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script> 
+		<script>
+		function chk()
+		{
+			if(document.getElementById('contenttitle').value=="")
+			{
+				art.alert('标题内容不能为空!');
+			document.getElementById('contenttitle').focus();
+			return false;
+			}
+			if(document.getElementById('verify').value=="")
+			{
+				art.alert('验证码不能为空!');
+				document.getElementById('verify').focus();
+				return false;
+			}
+		}
+
+			KindEditor.ready(function(K) {
+				K.each({ 
+					'plug-align' : {
+						name : '对齐方式',
+						method : {
+							'justifyleft' : '左对齐',
+							'justifycenter' : '居中对齐',
+							'justifyright' : '右对齐'
+						}
+					},
+					'plug-order' : {
+						name : '编号',
+						method : {
+							'insertorderedlist' : '数字编号',
+							'insertunorderedlist' : '项目编号'
+						}
+					},
+					'plug-indent' : {
+						name : '缩进',
+						method : {
+							'indent' : '向右缩进',
+							'outdent' : '向左缩进'
+						}
+					}
+				},function( pluginName, pluginData ){
+					var lang = {};
+					lang[pluginName] = pluginData.name;
+					KindEditor.lang( lang );
+					KindEditor.plugin( pluginName, function(K) {
+						var self = this;
+						self.clickToolbar( pluginName, function() {
+							var menu = self.createMenu({
+									name : pluginName,
+									width : pluginData.width || 100
+								});
+							K.each( pluginData.method, function( i, v ){
+								menu.addItem({
+									title : v,
+									checked : false,
+									iconClass : pluginName+'-'+i,
+									click : function() {
+										self.exec(i).hideMenu();
+									}
+								});
+							})
+						});
+					});
+				});
+				K.create('#contentqq', {
+					themeType : 'qq',
+					items : [
+						'bold','italic','underline','fontname','fontsize','forecolor','hilitecolor','plug-align','plug-order','plug-indent','link'
+					]
+				});
+			});
+		</script>
+	</head>
+
+  <body>
+	<include file="Public:head"/>
+    <div class="container-fluid">
+  <div class="alert alert-success">
+  您好，我是<span id="pdtManager">{$GLOBALS.cfg_webname}</span> 产品负责人，欢迎您给我们提出产品的使用感受和建议！ 
+  </div>
+<form method='post' action="{:U('Public/dofeedback')}" onsubmit="return chk();">
+  <fieldset>
+    <legend>建议反馈</legend>
+    <label>请输入建议标题</label>
+    <input type="text" name='title' id="contenttitle" />
+	<label>请输入正文内容</label>
+<textarea id="contentqq" name="content" style="width:700px;height:200px;visibility:hidden;"></textarea>
+<label>请输入验证码</label>
+<input class="input-mini" type="text" name="verify" id="verify" style="text-transform:uppercase;"/><img src="{:U('Public/verify')}" alt="看不清楚请点击刷新验证码" style="cursor : pointer;border:1px solid #ccc;margin-left:2px;margin-bottom:10px;" onclick="show(this)"/>			
+<div class="form-actions">
+  <button type="submit" class="btn btn-primary btn-large">提交</button>
+  <a href="__APP__" class="btn btn-large" >返回</a>
+</div>
+  </fieldset>
+</form>
+    </div>
+	<include file="Public:footer"/>
+	</body>
+</html>
+<script>
+function show(obj){
+obj.src="__URL__/verify/random/"+Math.random();
+}
+</script>
+

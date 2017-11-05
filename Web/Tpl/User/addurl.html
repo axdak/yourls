@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{$GLOBALS['cfg_webname']}-网址管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/Admin/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+    <div class="container-fluid">
+      <div class="row-fluid">
+		<div class="span12">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a class="brand" href="{:U('User/myfile')}">用户资料</a>
+					<ul class="nav">
+		<li ><a href="{:U('User/myfile')}">预览资料</a></li>
+		<li><a href="{:U('User/myfile?edit=base')}">修改资料</a></li>
+		<li><a href="{:U('User/myfile?edit=password')}">密码安全</a></li>
+		<li class="active"><a href="{:U('User/site')}">网址管理</a></li>
+		<li><a href="{:U('User/fenxi')}">统计分析</a></li>
+		<?php if(session('uid')==1):?><li><a href="{:U('User/fenxiall')}">全局统计分析</a></li><?php endif;?>
+		<eq name="GLOBALS.addallurloff" value='1'><li><a href="{:U('User/addall')}">批量添加</a></li></eq>
+		<li><a href="{:U('User/update')}">套餐升级</a></li><li><a href="{:U('User/domain')}">域名绑定</a></li>
+		</ul>
+				</div>
+			</div>
+		</div>
+        <div  style='border:1px solid #ccc;margin-bottom:10px;'>
+		<div style="padding:20px">
+		<form action="{:U('User/doaddurl')}" method="post" onsubmit="return CheckForm()">
+  <fieldset>
+    <h4>添加短网址<span style="float:right;"><a href="{:U('User/site')}" class="btn">返回列表</a></span></h4><hr>
+    <label>源地址</label>
+    <input type="text" id="longurl" name="longurl" class="input-xxlarge"  placeholder="请输入源地址，例如：http://www.baidu.com">
+    <span class="help-block">请输入合法且可以正常访问的网络地址</span>
+	<label>自定义短地址</label>
+	<input type="text" id="tinyurl" name="tinyurl" class="input-xxlarge"  placeholder="请输入短地址,留空则系统随机生成">
+	 <span class="help-block">自定义短地址只支持数字，小写字母组合，限制10位以内（包含10位）。留空则系统随机生成</span>
+		<eq name="GLOBALS.linkcodeoff" value='1'>
+	<label>短地址加密</label>
+	<div class="input-append"><input type="text" id="pwd" name="pwd"  ><span class="add-on"  id="freecode" style="cursor:pointer;">&nbsp;随机&nbsp;</span></div>
+	 <span class="help-block">短地址加密后将需要提供密码才可以访问，建议6-10位密码 留空则公开浏览访问</span>
+	 </eq>
+	 <label>备注内容</label>
+	 <input type="text" id="beizhu" name="beizhu" class="input-xxlarge"  placeholder="备注内容">
+	  <span class="help-block">备注内容为选填项，备注内容能帮助您快速有效识别短地址。</span>
+	     <div class="form-actions">
+		 <if condition="$GLOBALS['verifyoff'] neq 1">
+		 <button type="submit" class="btn btn-primary btn-large ">添加</button>
+		 <else/>
+  <button type="button" onclick="YXM_popBox(this,'');" class="btn btn-primary btn-large">添加</button></if>&nbsp;&nbsp;&nbsp;&nbsp;<button type="reset"  onclick="history.go(-1)" class="btn btn-large">返回</button>
+</div>
+  </fieldset>
+</form>
+		</div>
+		</div>
+	 </div>
+   <include file="Public:footer"/>
+    </div>
+  </body>
+</html>
+<script>
+ <if condition="$GLOBALS['verifyoff'] eq 1">
+var YXM_switch_key = 1;var YXM_PUBLIC_KEY = 'e491033892fbb0b74b58cd2c37efeeaf';
+document.write("<input type='hidden' id='YXM_here' /><script type='text/javascript' charset='gbk' id='YXM_script' src='http://api.yinxiangma.com/api3/yzm.yinxiangma.php?pk="+YXM_PUBLIC_KEY+"&v=YinXiangMaJsSDK_4.0'><"+"/script>");
+function YXM_valided_true()
+{
+	$("form:first").submit();
+}
+function YXM_valided_false()
+{
+	art.dialog.alert('验证失败，请重试！');
+}
+</if>
+function show(obj){
+obj.src="{:U('Public/verify?random=1')}"+ Math.random();
+}
+	function CheckForm()
+	{ 
+		if(EmptyCheckForm('longurl','源地址不能为空!','')) return false;
+		if(EmailCheckForm('tinyurl','短地址格式不正确！'))return false;
+	}
+	function EmptyCheckForm(id,value,set)
+	{
+		if($('#'+id).val()==set)
+		{
+			$.dialog({icon:'warning',content:value,ok:function(){ $('#' + id).focus();}});return true;
+		}
+		return false;
+	}
+		$('#freecode').click(function(){
+		$('#pwd').val(randPassword());
+	});
+   function EmailCheckForm(id,msg)
+   { 
+		var szReg=/^[A-Za-z0-9]{1,20}$/; 
+		Mail = $('#'+id).val();
+		if(szReg.test(Mail)==false && Mail!='')
+		{
+			$.dialog({icon:'warning',content:msg,ok:function(){ $('#' + id).focus();}});return true;
+		}
+		return false;
+	} 
+	function randPassword() 
+{ 
+var text=['abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ','1234567890','~!@#$%^&*()_+;,./?<>']; 
+var rand = function(min, max){return Math.floor(Math.max(min, Math.random() * (max+1)));} 
+var len = rand(6, 10); // 长度为6-10 
+var pw = ''; 
+for(i=0; i<len; ++i) 
+{ 
+var strpos = rand(0, 3); 
+pw += text[strpos].charAt(rand(0, text[strpos].length)); 
+} 
+return pw; 
+} 
+</script>
+<script charset="utf-8" src="__PUBLIC__/Common/Jquery/Jquery.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script>  
+	

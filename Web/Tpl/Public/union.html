@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>安全联盟 - {$GLOBALS['cfg_webname']}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{$GLOBALS.description}" />
+	<meta name="keywords"  content="{$GLOBALS.keywords}" />
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/User/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+	<div class="container">
+ 	<div class="row">
+ 		<div class="span12">
+ 			<div class="page-header">
+  				<h3>安全短网址联盟<small><?php echo $_SERVER['SERVER_NAME'];?> 是短网址安全联盟发起者，同时也是短网址安全联盟成员</small></h3>
+			</div>
+ 			<div class="well" style="margin-top: 20px;">
+				<p>安全短网址联盟旨在建立一个公用的安全的防止恶意网址在安全短网址联盟成员下生成短网址并肆意传播导致网址域名百度金山腾讯等开放互联网服务商屏蔽的智能网址屏蔽联盟。</p><p>安全短网址联盟整合了金山，腾讯，百度，安全联盟，360等大型互联网厂商提供API接口。</p><p>同时，基于共有云计算平台，自建了动态的流行恶意网址数据库。通过安全短网址联盟公开的API，你可以集成到您的短网址平台或者系统里，轻松防御恶意网址，为互联网安全事业做出属于自己的贡献！</p>
+			</div>
+			
+			<div class="page-header">
+  				<h3>合作平台</h3>
+			</div>
+ 			<div  style="margin-top: 20px;">
+				<p><img src="http://www.baidu.com/img/bdlogo.gif" width="100" height="80"><img src="http://www.ijinshan.com/images/v2/logo.png" width="100" height="80" alt="金山"/> <img src="http://static.anquan.org/static/images/site_logo.png" width="100" height="80" alt="安全联盟"/> <img src="http://pc1.gtimg.com/guanjia/images/index/tencent.png" alt="腾讯" width="100" height="80"/> <img src="http://webscan.360.cn/img/logo.png" alt="360" width="100" height="80"/> <img src="http://www.sogou.com/images/logo_l.gif" alt="sogou" width="100" height="80'/></p>
+			</div>
+			
+			
+			<div class="page-header">
+  				<h3>联盟成员</h3>
+			</div>
+ 			<div class="well" style="margin-top: 20px;">
+				<p>安全短网址：<a href="http://<?php echo $_SERVER['SERVER_NAME'];?>" target="_blank"><?php echo $_SERVER['SERVER_NAME'];?></a></p>
+			
+			</div>
+			
+			<div class="page-header">
+  				<h3>如何成为联盟成员</h3>
+			</div>
+ 			<div class="well" style="margin-top: 20px;">
+				<p>1点此<a href="http://<?php echo $_SERVER['SERVER_NAME'];?>/Public/Uploads/file/apitable.doc">链接</a>下载申请表 邮件至 admin@<?php echo $_SERVER['SERVER_NAME'];?></p>
+				<p>2.添加友情链接 http://<?php echo $_SERVER['SERVER_NAME'];?>/?m=Public&a=union 在首页显著位置</p>
+				<p>3.三个工作日内 技术人员将与你取得联系并协助调试API</p>
+			</div>
+			<div class="page-header">
+  				<h3>安全API接口</h3>
+			</div>
+ 			<div class="well" style="margin-top: 20px;">
+				<p>安全API接口是提供给短网址服务商的公开恶意网址探测接口，你只需联系我们提供私有的密钥后，按照下面的例子即可集成到你的系统里。</p>
+				<p>请求：向 http://<?php echo $_SERVER['SERVER_NAME'];?>/index.php?m=Api&a=safeurlapi&appkey=您的appkey&appsecret=您的appsecret 发送post请求，发送数据包括url=查询的网址</p>
+				<p>返回：json格式的数据</p>
+
+<p>1.status!=0 则代表网址被检测为不安全链接，查看err_msg获得具体的提示消息（UTF-8编码）</p>
+
+<p>2.反之，则代表网址通过了安全接口查询，返回原网址 url 即 当前网址是安全的</p>
+			</div>
+			<div class="page-header">
+  				<h3>安全API接口：PHP示例程序</h3>
+			</div>
+			<div class="well" style="margin-top: 20px;">
+        <pre><?php echo '<?php <br>';?>
+header("Content-type:text/html;charset=utf-8");
+$ch=curl_init();
+$url = 'http://taobao.tk';
+curl_setopt($ch,CURLOPT_URL,"http://<?php echo $_SERVER['SERVER_NAME'];?>/index.php?m=Api&a=safeurlapi&appkey=dwzse&appsecret=123456");
+curl_setopt($ch,CURLOPT_POST,true);
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+$data=array('url'=>$url);
+curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
+$strRes=curl_exec($ch);
+curl_close($ch);
+$arrResponse=json_decode($strRes,true);
+if($arrResponse['status']==0)
+{
+	echo '检测网址：'.$url.'<br>检测结果：'.$url.'为安全网址！';
+}
+else
+{
+    echo '检测网址：'.$url.'<br>检测结果：'.$arrResponse['err_msg'];
+}
+<?php echo '?>';?></pre></div>
+		<div class="page-header">
+  				<h3>集成文档下载</h3><a name="download"></a>
+			</div>
+		<div class="well" style="margin-top: 20px;">
+		<p>Phurl2.4.2集成文档：<a href="http://<?php echo $_SERVER['SERVER_NAME'];?>/Public/Uploads/file/phpurl.zip" class="btn">下载</a></p>
+		<p>DWZ3.0 集成文档：<a href="http://<?php echo $_SERVER['SERVER_NAME'];?>/Public/Uploads/file/dwz3.zip" class="btn">下载</a></p>
+		<p>DWZ2.1 集成文档：<a href="http://<?php echo $_SERVER['SERVER_NAME'];?>/Public/Uploads/file/dwz2.zip" class="btn">下载</a></p>
+		<p></p>
+		</div>
+		<div class="page-header">
+  				<h3>演示DEMO</h3>
+			</div>
+		<div class="well" style="margin-top: 20px;">
+		<p>接口演示程序：<a href="http://<?php echo $_SERVER['SERVER_NAME'];?>/?m=Public&a=safecx">http://<?php echo $_SERVER['SERVER_NAME'];?>/?m=Public&a=safecx</a></p>
+		</div>
+  
+        
+</div>
+			
+		</div>
+	</div>
+</div>
+<include file="Public:footer"/>
+	</body>
+</html>
+

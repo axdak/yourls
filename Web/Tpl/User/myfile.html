@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{$GLOBALS['cfg_webname']}-用户资料</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/Admin/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+    <div class="container-fluid">
+      <div class="row-fluid">
+		<div class="span12">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a class="brand" href="{:U('User/myfile')}">用户资料</a>
+					<ul class="nav">
+		<li class="active"><a href="{:U('User/myfile')}">预览资料</a></li>
+		<li><a href="{:U('User/myfile?edit=base')}">修改资料</a></li>
+		<li><a href="{:U('User/myfile?edit=password')}">密码安全</a></li>
+		<li><a href="{:U('User/site')}">网址管理</a></li>
+		<li><a href="{:U('User/fenxi')}">统计分析</a></li>
+		<?php if(session('uid')==1):?><li><a href="{:U('User/fenxiall')}">全局统计分析</a></li><?php endif;?>
+		<eq name="GLOBALS.addallurloff" value='1'><li><a href="{:U('User/addall')}">批量添加</a></li></eq>
+		<li><a href="{:U('User/update')}">套餐升级</a></li><li><a href="{:U('User/domain')}">域名绑定</a></li>
+		</ul>
+				</div>
+			</div>
+		</div>
+        <div  style='border:1px solid #ccc;margin-bottom:10px;'>
+		<div style="padding:20px">
+		 <h4>基本资料</h4><br>
+		<table class="table table-bordered table-hover">
+		<tr><td>用户ID</td><td>{$list.id}</td><td>用户名</td><td>{$list.username}</td></tr>
+		<tr><td>性别</td><td><eq name='list.sex' value='0'>女<else/>男</eq></td><td>生日</td><td>{$list.birthday}</td></tr>
+		<tr><td>省份</td><td>{$list.province}</td><td>城市</td><td>{$list.city}</td></tr>
+		<tr><td>Email</td><td>{$list.email}</td><td>快捷登录</td><td>
+		<?php if($GLOBALS['qqloginoff']==1 && substr($list['activekey'],0,3)<>'qq_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定QQ登录？','{:U('Index/login?type=qq&mode=bangding')}')" ><font color=blue>绑定QQ</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['qqloginoff']==1  && substr($list['activekey'],0,3)=='qq_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除QQ登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定QQ</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['weibologinoff']==1  && substr($list['activekey'],0,5)<>'sina_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定新浪微博登录？','{:U('Index/login?type=sina&mode=bangding')}')" ><font color=blue>绑定新浪微博</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['weibologinoff']==1  && substr($list['activekey'],0,5)=='sina_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除新浪微博登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定新浪微博</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['renrenloginoff']==1  && substr($list['activekey'],0,7)<>'renren_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定人人网登录？','{:U('Index/login?type=renren&mode=bangding')}')" ><font color=blue>绑定人人网</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['renrenloginoff']==1 && substr($list['activekey'],0,7)=='renren_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除人人网登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定人人网</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['doubanloginoff']==1  && substr($list['activekey'],0,7)<>'douban_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定豆瓣网登录？','{:U('Index/login?type=douban&mode=bangding')}')" ><font color=blue>绑定豆瓣网</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['doubanloginoff']==1 && substr($list['activekey'],0,7)=='douban_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除豆瓣网登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定豆瓣网</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['baiduloginoff']==1  && substr($list['activekey'],0,6)<>'baidu_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定百度登录？','{:U('Index/login?type=baidu&mode=bangding')}')" ><font color=blue>绑定百度</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['baiduloginoff']==1 && substr($list['activekey'],0,6)=='baidu_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除百度登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定百度</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['tencentloginoff']==1  && substr($list['activekey'],0,8)<>'tencent_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定腾讯微博登录？','{:U('Index/login?type=tencent&mode=bangding')}')" ><font color=blue>绑定腾讯微博</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['tencentloginoff']==1 && substr($list['activekey'],0,8)=='tencent_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除腾讯微博登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定腾讯微博</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['t163loginoff']==1  && substr($list['activekey'],0,5)<>'t163_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定网易微博登录？','{:U('Index/login?type=t163&mode=bangding')}')" ><font color=blue>绑定网易</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['t163loginoff']==1 && substr($list['activekey'],0,5)=='t163_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除网易微博登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定网易</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['x360loginoff']==1  && substr($list['activekey'],0,5)<>'x360_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定360登录？','{:U('Index/login?type=x360&mode=bangding')}')" ><font color=blue>绑定360</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['x360loginoff']==1 && substr($list['activekey'],0,5)=='x360_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除360登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定360</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['sohuloginoff']==1  && substr($list['activekey'],0,5)<>'sohu_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定搜狐通行证登录？','{:U('Index/login?type=sohu&mode=bangding')}')" ><font color=blue>绑定搜狐</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['sohuloginoff']==1 && substr($list['activekey'],0,5)=='sohu_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除搜狐通行证登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定搜狐</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['kaixinloginoff']==1  && substr($list['activekey'],0,7)<>'kaixin_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定开心网登录？','{:U('Index/login?type=kaixin&mode=bangding')}')" ><font color=blue>绑定开心网</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['kaixinloginoff']==1 && substr($list['activekey'],0,7)=='kaixin_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除开心网登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定开心网</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['taobaologinoff']==1  && substr($list['activekey'],0,7)<>'taobao_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定淘宝网登录？','{:U('Index/login?type=taobao&mode=bangding')}')" ><font color=blue>绑定淘宝网</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['taobaologinoff']==1 && substr($list['activekey'],0,7)=='taobao_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除淘宝网登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定淘宝网</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['googleloginoff']==1  && substr($list['activekey'],0,7)<>'google_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定谷歌登录？','{:U('Index/login?type=google&mode=bangding')}')" ><font color=blue>绑定谷歌</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['googleloginoff']==1 && substr($list['activekey'],0,7)=='google_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除谷歌登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定谷歌</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['msnloginoff']==1  && substr($list['activekey'],0,4)<>'msn_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定msn登录？','{:U('Index/login?type=msn&mode=bangding')}')" ><font color=blue>绑定MSN</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['msnloginoff']==1 && substr($list['activekey'],0,4)=='google_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除msn登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定MSN</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['diandianloginoff']==1  && substr($list['activekey'],0,9)<>'diandian_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要绑定点点网登录？','{:U('Index/login?type=diandian&mode=bangding')}')" ><font color=blue>绑定点点网</font></a>&nbsp;
+		<?php endif;?>
+		<?php if($GLOBALS['diandianloginoff']==1 && substr($list['activekey'],0,9)=='diandian_'):?>
+		<a href="javascript:;" onclick="JavaScript:jconfirm('确定要解除点点网登录绑定？','{:U('Public/freeqq')}')"><font color=green>已绑定点点网</font></a>&nbsp;
+		<?php endif;?>
+		</td></tr>
+		<tr><td>注册时间</td><td>{$list.regtime|date="Y-m-d H:i:s",###}</td><td>最后登陆时间</td><td>{$list.logintime|date="Y-m-d H:i:s",###}</td></tr>
+		<tr><td>最后登陆IP</td><td>{$list.loginip}&nbsp;<span ip="{$list.loginip}"><img src="__PUBLIC__/User/img/wait.gif"/></span></td><td>套餐方案</td><td>{$grouplist.rankname}（可生成短地址数：<font color=red><eq name="grouplist.rankmoney" value='0'>∞不限制<else/>{$grouplist.rankmoney}</eq></font>）</td></tr>
+		<tr><td>套餐内使用条数</td><td><font color=green>{$gnum}</font></td><td>套餐剩余使用条数</td><td><font color=green>{$snum}</font></td></tr>
+		</table>
+		</div></div>
+	 </div>
+   <include file="Public:footer"/>
+    </div>
+  </body>
+</html>
+<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script>  
+<script>
+function jconfirm(str,url)
+{
+   $.dialog.confirm(str,function (){window.location.href=url;});
+}
+function parseip(remote_ip_info,ip){
+			if(remote_ip_info.ret=='-1')
+	{
+		$("span[ip='"+ip+"']").html('局域网地址');
+	}
+	else
+	{
+		var data = '';
+		if(remote_ip_info.country !='') data = remote_ip_info.country + ',';
+		
+		if(remote_ip_info.province !='') data = data + remote_ip_info.province + ',';
+		if(remote_ip_info.city !='') data = data + remote_ip_info.city + ',';
+		if(remote_ip_info.district !='') data = data + remote_ip_info.district + ',';
+		if(remote_ip_info.isp !='') data = data + remote_ip_info.isp + ',';
+		$("span[ip='"+ip+"']").html(data);
+	}
+	
+	}
+	</script>
+	<script src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={$list.loginip}"></script>
+	<script>
+	parseip(remote_ip_info,'{$list.loginip}');
+	</script>

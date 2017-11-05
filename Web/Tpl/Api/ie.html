@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<script src="http://lib.sinaapp.com/js/jquery/1.8.3/jquery.min.js"></script>
+<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+<script type="text/javascript" language="javascript">
+function OnContextMenu(){
+var parentwin = external.menuArguments;
+if (external.menuArguments) {
+if($('#addtourlbox',parentwin.document).length == 0){
+$('body',parentwin.document).append('<div id="addtourlbox" style="white-space:nowrap;position:absolute; z-index:99999; left:50%; margin-left:-100px; width:335px; _width:300px; text-align:center; padding:20px 0 20px 20px; _padding:5px 0 20px 20px; background:#FFF; border:solid #CCC 5px; font-size:14px;"><img src="http://955.cc/images/white-loader.gif" style="vertical-align:middle" /> 正在生成短网址……</div>');
+} else {
+$('#addtourlbox',parentwin.document).show();
+}
+$('#addtourlbox',parentwin.document).css('top',$(parentwin.document).scrollTop()+100);
+var url = external.menuArguments.document.URL;
+var title = parentwin.document.title;
+var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+var oDoc = parentwin.document;
+xmlhttp.open("POST","{:U('Api/ie')}",false);
+xmlhttp.onreadystatechange = function(){
+if (xmlhttp.readyState==4 && xmlhttp.status==200){
+  var msg = eval("(" + xmlhttp.responseText + ")");
+if (msg.status == -1)
+ {
+        $('#addtourlbox',oDoc).html('<span style="float:right;margin-top:-10px;cursor:pointer;" onclick="document.getElementById(\'addtourlbox\').style.display=\'none\'">X&nbsp;&nbsp;</span>'+msg.err_msg);
+ }
+  if (msg.tinyurl != undefined)
+    {
+		msg.tinyurl = msg.tinyurl + '<notempty name="GLOBALS.suffix">.{$GLOBALS['suffix']}</notempty>';
+		var base  = '<span style="float:right;margin-top:-10px;cursor:pointer;" onclick="document.getElementById(\'addtourlbox\').style.display=\'none\'">X&nbsp;&nbsp;</span><img src="http://chart.apis.google.com/chart?cht=qr&&chs=200x200&chl='+msg.tinyurl+'" style="border:0;vertical-align:middle" /><br><br>';
+		var sharedata = '<a target="_blank" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+msg.tinyurl+'&desc=我在{$GLOBALS['cfg_webname']}上生成了一个短网址，欢迎使用哦！&summary={$GLOBALS['cfg_webname']}&site={$GLOBALS['cfg_webname']}"><img src="{:getroot(1)}__PUBLIC__/User/img/miniqq.png" style="border:0"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://service.weibo.com/share/share.php?url='+msg.tinyurl+'"><img src="{:getroot(1)}__PUBLIC__/User/img/miniweibo.png" style="border:0"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://share.v.t.qq.com/index.php?c=share&a=index&url='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}"><img src="{:getroot(1)}__PUBLIC__/User/img/minitencent.png" style="border:0"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://widget.renren.com/dialog/share?resourceUrl='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}&description={$GLOBALS.description}"><img src="{:getroot(1)}__PUBLIC__/User/img/minirenren.png" style="border:0"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://t.163.com/article/user/checkLogin.do?info='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}"><img src="{:getroot(1)}__PUBLIC__/User/img/minit163.png" style="border:0"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://shuo.douban.com/!service/share?href='+msg.tinyurl+'&name={$GLOBALS['cfg_webname']}"><img src="{:getroot(1)}__PUBLIC__/User/img/minidouban.png" style="border:0"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://www.diandian.com/share?lo='+msg.tinyurl+'&ti={$GLOBALS['cfg_webname']}&type=link"><img src="{:getroot(1)}__PUBLIC__/User/img/minidiandian.png" style="border:0"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://tieba.baidu.com/f/commit/share/openShareApi?url='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="{:getroot(1)}__PUBLIC__/User/img/minibaidu.png" style="border:0"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://share.jianghu.taobao.com/share/addShare.htm?url='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="{:getroot(1)}__PUBLIC__/User/img/minitaobao.png" style="border:0"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://t.sohu.com/third/post.jsp?url='+msg.tinyurl+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="{:getroot(1)}__PUBLIC__/User/img/minisohu.png" style="border:0"/></a>&nbsp;';
+		var content = base+'<p>原始地址：<a href="'+msg.longurl+'" target="_blank">'+msg.longurl+'</a></p><br><p >短网址：<a href="'+ msg.tinyurl+'" target="_blank" >'+ msg.tinyurl+'</a>&nbsp;<button onclick="window.clipboardData.setData(\'text\',\''+msg.tinyurl+'\');" cid="tinyurl" class="btn btn-mini">复制</button></p><br><p>分享到：'+sharedata+'</p>';
+		 $('#addtourlbox',oDoc).html(content);
+    }
+//$('#addtourlbox',oDoc).html(xmlhttp.responseText);
+$('#addtourlbox',oDoc).css('marginLeft','-'+$('#addtourlbox',oDoc).width()/2);
+} else if(xmlhttp.readyState==4 && xmlhttp.status>200){
+$('#addtourlbox',oDoc).html('<span style="float:right;margin-top:-10px;cursor:pointer;" onclick="document.getElementById(\'addtourlbox\').style.display=\'none\'">X&nbsp;&nbsp;</span>发生了错误，请刷新后重试：'+xmlhttp.responseText);
+}
+}
+xmlhttp.setRequestHeader("Accept","application/json");
+xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+xmlhttp.send('url='+encodeURIComponent(url)+'&title='+encodeURIComponent(title));
+}
+
+}
+OnContextMenu();
+</script>
+</head>
+</html>

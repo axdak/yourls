@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{$GLOBALS['cfg_webname']}-网址管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="__PUBLIC__/User/css/bootstrap.min.css" rel="stylesheet">
+	<link rel='shortcut icon' href="http://cloud.waikucms.com/theme/favicon.ico" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="__PUBLIC__/User/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<script src="__PUBLIC__/Admin/js/Jquery.js"></script>
+	<script src="__PUBLIC__/User/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <include file="Public:head"/>
+    <div class="container-fluid">
+      <div class="row-fluid">
+		<div class="span12">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a class="brand" href="{:U('User/myfile')}">用户资料</a>
+					<ul class="nav">
+		<li ><a href="{:U('User/myfile')}">预览资料</a></li>
+		<li><a href="{:U('User/myfile?edit=base')}">修改资料</a></li>
+		<li><a href="{:U('User/myfile?edit=password')}">密码安全</a></li>
+		<li><a href="{:U('User/site')}">网址管理</a></li>
+		<li><a href="{:U('User/fenxi')}">统计分析</a></li>
+		<?php if(session('uid')==1):?><li><a href="{:U('User/fenxiall')}">全局统计分析</a></li><?php endif;?>
+		<eq name="GLOBALS.addallurloff" value='1'><li><a href="{:U('User/addall')}">批量添加</a></li></eq>
+		<li ><a href="{:U('User/update')}">套餐升级</a></li>
+		<li class="active"><a href="{:U('User/domain')}">域名绑定</a></li>
+		</ul>
+				</div>
+			</div>
+		</div>
+        <div  style='border:1px solid #ccc;margin-bottom:10px;'>
+		<div style="padding:20px">
+		  <h4>域名绑定</h4><hr>
+		  <lt name="auth" value="2">
+		  <p>抱歉，您的帐户没有域名绑定权限，请联系管理员升级您的套餐方案！</p><else/>
+		  <empty name="list"><div class="alert">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+ 当前您还没有绑定域名，请在下方填写域名信息。
+</div>
+<else/>
+<eq name="list.status" value='0'>
+<div class="alert alert-error">
+<p>当前帐户绑定的域名为：{$list.domain}</p>
+<p>请将此域名 cname  @ 记录 到 74q.net </p>
+<p>或 a 记录 @  到 210.209.116.1</p>
+<p>当前域名等待管理员审核，请耐心等待。</p>
+</div>
+<else/>
+<div class="alert alert-success">
+<p>当前帐户绑定的域名为：{$list.domain}</p>
+<p>请将此域名 cname  @ 记录 到 74q.net </p>
+<p>或 a 记录 @  到 210.209.116.1</p>
+<p>恭喜,当前域名已经审核通过。</p>
+</div>
+</eq>
+</empty>
+		  <form action="{:U('User/domainadd')}" method="post">
+		  <div class="input-append">
+		  <input class="input-xxlarge" type="text" name="domain" value="{$list.domain}" placeholder="请输入域名地址,不加http://">
+		   <div class="btn-group"><input class="btn btn-primary" type="submit" value="提交"/></div>
+		  </div>
+		  </form>
+		  </lt>
+		</div></div>
+	 </div>
+   <include file="Public:footer"/>
+    </div>
+  </body>
+</html>
+<script charset="utf-8" src="__PUBLIC__/Common/Jquery/Jquery.js"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=twitter"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script>  
