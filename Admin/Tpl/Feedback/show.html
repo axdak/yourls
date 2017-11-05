@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>网站后台管理</title>
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type=text/css rel=stylesheet>
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<import file= "Admin.js.admin,Admin.js.Ajax,Admin.js.Jquery"/> 
+<script language="javascript">
+function chk(){
+		if(document.getElementById('longurl').value==""){
+		alert('源地址不能为空!');
+		document.getElementById('longurl').focus();
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+<table width="95%" border="0"  align=center cellpadding="3" cellspacing="2" bgcolor="#FFFFFF" class="admintable">
+<tr> 
+    <td colspan="5" class="admintitle">预览信息</td>
+</tr>
+<tr>
+  <td bgcolor="#f7f7f7">标题</td>
+  <td colspan=4 bgcolor="#f7f7f7" class=td>{$list.title}</td>
+</tr>
+<tr>
+  <td bgcolor="#f7f7f7">发布时间</td>
+  <td colspan=4 bgcolor="#f7f7f7" class=td>{$list.addtime|date='Y-m-d H:i:s',###}</td>
+</tr>
+<tr>
+  <td bgcolor="#f7f7f7">正文内容</td>
+  <td colspan=4 bgcolor="#f7f7f7" class=td>{$list.content}</td>
+</tr>
+<tr> 
+<td width="20%"></td>
+<td colspan=4 class=td>
+<input name="Submit22" type="button" class="bnt" onClick="history.go(-1)" value="返 回">  </td>
+</tr>
+</form>
+</table>
+<div style="text-align:center;margin:10px;">
+<hr>
+<include file="Index:copy" /> 
+</div>
+</body>
+</html>

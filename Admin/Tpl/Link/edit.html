@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>网站后台管理</title>
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type="text/css" rel="stylesheet">
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+</head>
+<body>
+<table width="95%" border="0"  align="center" cellpadding="3" cellspacing="2" bgcolor="#FFFFFF" class="admintable" style="text-align:left;">
+<form name="myform" action="{:U('Link/doedit')}" method="post" onsubmit="return chk();">
+<tr> 
+    <td colspan="5" class="admintitle"><span style="float:right;"><a href="javascript:;" onclick="javascript:history.go(-1);">[返回]</a></span>修改短地址</td>
+</tr>
+<tr>
+  <td bgcolor="#f7f7f7">源地址</td>
+  <td colspan=4 bgcolor="#f7f7f7" class="td"><input name="longurl" type="text" class="inputbg" id="longurl" value="{$list.longurl}" size="30"></td>
+</tr>
+<tr>
+  <td bgcolor="#f7f7f7">短地址</td>
+  <td colspan=4 bgcolor="#f7f7f7" class="td"><input name="tinyurl" type="text" class="inputbg" id="tinyurl" value="{$list.tinyurl}" size="30">（仅支持大小写字母，数字，10位以内 留空则系统随机生产）</td>
+</tr>
+<tr <?php if($GLOBALS['linkcodeoff']<>1) echo ' style="display:none;"';?>>
+  <td bgcolor="#f7f7f7">短地址加密密码</td>
+  <td colspan=4 bgcolor="#f7f7f7" class="td"><input name="pwd" type="text" class="inputbg" id="pwd" value="" size="30">（建议密码 6-10位 留空则清空密码）<input  type="button" class="bnt" value="随 机" id="freecode"/></td>
+</tr>
+<tr>
+  <td bgcolor="#f7f7f7">指定解析模版</td>
+  <td colspan=4 bgcolor="#f7f7f7" class="td">
+  <select name="tplid">
+  <option value='0'>无模板</option>
+  <volist name="tpllist" id="vo">
+  <option value="{$vo.id}" <?php if($list['tplid']==$vo['id']) echo " selected='selected'";?>>{$vo.title}</option>
+  </volist>
+  </select>
+  </td>
+</tr>
+<tr>
+  <td bgcolor="#f7f7f7">短地址状态</td>
+  <td colspan=4 bgcolor="#f7f7f7" class="td">
+  <select name="type">
+  <option value='1' <?php if($list['type']==1) echo " selected='selected'";?>>开启</option>
+  <option value='2' <?php if($list['type']==2) echo " selected='selected'";?>>暂停</option>
+  </select>
+  </td>
+</tr>
+<tr>
+  <td bgcolor="#f7f7f7">短地址备注</td>
+  <td colspan=4 bgcolor="#f7f7f7" class="td"><input name="beizhu" type="text" class="inputbg" id="beizhu" value="{$list.beizhu}" size="60"></td>
+</tr>
+<tr>
+  <td bgcolor="#f7f7f7">所属用户ID（1为管理员 0为无人认领）</td>
+  <td colspan=4 bgcolor="#f7f7f7" class="td"><input name="mid" type="text" class="inputbg" id="mid" value="{$list.mid}" size="20"></td>
+</tr>
+<tr> 
+<td width="20%"></td>
+<td colspan=4 class="td"><input name="id" type="hidden" value="{$list.id}">
+<input name="submit" type="submit" class="bnt" value="提 交">&nbsp;<input name="Submit22" type="button" class="bnt" onClick="history.go(-1)" value="返 回">  </td>
+</tr>
+</form>
+</table>
+<div style="text-align:center;margin:10px;">
+<hr>
+<include file="Index:copy" /> 
+</div>
+</body>
+</html>
+<import file= "Admin.js.admin,Admin.js.Ajax,Admin.js.Jquery"/> 
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=green"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script> 
+	<script>
+	function chk()
+	{
+		if(EmailCheckForm('longurl','原始地址格式不正确!'))return false;
+		if(QQCheckForm('tinyurl','短地址格式不正确！'))return false;
+	}
+	 function EmailCheckForm(id,msg)
+   { 
+		var szReg=/^[a-zA-z]+:\/\/[^\s]+$/; 
+		Mail = $('#'+id).val();
+		if(szReg.test(Mail)==false)
+		{
+			$.dialog({icon:'warning',content:msg,ok:function(){ $('#' + id).focus();}});return true;
+		}
+		return false;
+	} 
+	function EmptyCheckForm(id,value,set)
+	{
+		if($('#'+id).val()==set)
+		{
+			$.dialog({icon:'warning',content:value,ok:function(){ $('#' + id).focus();}});return true;
+		}
+		return false;
+	}
+	function QQCheckForm(id,msg)
+	{ 
+		var szReg=/^[0-9a-z]{1,10}$/; 
+		Mail = $('#'+id).val();
+		if(Mail=='')
+		{
+			return false;
+		}
+		if(szReg.test(Mail)==false)
+		{
+			$.dialog({icon:'warning',content:msg,ok:function(){ $('#' + id).focus();}});return true;
+		}
+		return false;
+	} 
+		$('#freecode').click(function(){
+		$('#pwd').val(randPassword());
+		$.dialog.tips('随机密码成功生成！');
+	});
+	function randPassword() 
+{ 
+var text=['abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ','1234567890','~!@#$%^&*()_+;,./?<>']; 
+var rand = function(min, max){return Math.floor(Math.max(min, Math.random() * (max+1)));} 
+var len = rand(6, 10); // 长度为6-10 
+var pw = ''; 
+for(i=0; i<len; ++i) 
+{ 
+var strpos = rand(0, 3); 
+pw += text[strpos].charAt(rand(0, text[strpos].length)); 
+} 
+return pw; 
+} 
+	</script>

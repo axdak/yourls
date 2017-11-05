@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type=text/css rel=stylesheet>
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<style> 
+.classlist {float:left;margin:0;padding:0;}
+.classlist ul {float:left;margin:0;padding:0;}
+.classlist li {margin:0;padding:0;padding:3px 0;border-bottom:1px solid #ffffff;}
+.classlist li span {float:right;margin-top:-3px;}
+.classlist .bigclass {font-weight:bold;clear:both;list-style:none;margin:5px 0;}
+.classlist .yaoclass {font-weight:normal;list-style:none;padding-left:10px;}
+</style>
+<title>模板管理</title>
+</head>
+<body>
+	
+<table border="0" align="center" cellpadding="3" cellspacing="2" bgcolor="#FFFFFF" class="admintable">
+  <tr>
+    <td colspan="4" class="admintitle">模板列表 [<a href="{:U('Tpl/add')}">添加</a>]</td>
+  </tr>
+  <tr>
+    <td width="20%" height="25" align="center" bgcolor="#FFFFFF" class="ButtonList">ID</td>
+    <td width="20%" align="center" bgcolor="#FFFFFF" class="ButtonList">模板名称</td>
+    <td width="30%" align="center" bgcolor="#FFFFFF" class="ButtonList">最后编辑时间</td>
+    <td width="30%" align="center" bgcolor="#FFFFFF" class="ButtonList">管理选项</td>
+  </tr>
+ <volist name= "list" id="vo">
+  <tr>
+    <td height="25" align="center" bgcolor="f7f7f7">{$vo.id}</td>
+    <td align="center" bgcolor="f7f7f7">{$vo.title}</td>
+    <td align="center" bgcolor="f7f7f7">{$vo.pubdate|date="Y-m-d H:i:s",###}</td>
+	<td bgcolor="f7f7f7" style="padding-left:25px;"><a href="{:U('Tpl/edit?id=')}{$vo.id}">修改</a>|<a href="{:U('Tpl/del?id=')}{$vo.id}" onClick="JavaScript:return confirm('确定要删除？删除后，当前模板下的短地址将直接跳转！')">删除</a></td>
+  </tr>
+  </volist>
+  <tr><td bgcolor="f7f7f7" colspan="4">
+<div id="page">
+	<ul style="text-align:left;">
+{$page}
+    </ul>
+</div>
+</td></tr>
+</table>
+<div style="text-align:center;margin:10px;">
+<hr>
+<include file="Index:copy" /> 
+</div>
+</body>
+</html>

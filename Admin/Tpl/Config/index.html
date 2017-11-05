@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>网站后台管理</title>
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type="text/css" rel="stylesheet">
+<style> 
+td {font-size:13px;}
+</style>
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<script src="__PUBLIC__/Admin/js/admin.js"></script>
+</head>
+<body>
+<form name='frm' method='post' action="{:U('Config/update')}">
+<div class="nTableft admintable">
+      	<div class="TabTitleleft">
+      		<ul id="myTab1">
+					<li class="active" onClick="nTabs(this,0);" style="width:100%;text-align:left;">{$title}</li>
+      		</ul>
+    	</div>
+		<div id="myTab1_Content0"  style="clear:both;">
+<table width="100%" border="0"  align=center cellpadding="3" cellspacing="1" style="margin:5px 0;background:#FFF">
+	
+		<volist name='list' id='vo'>
+		<tr onMouseOver="this.style.backgroundColor='#EEFCDD';this.style.color='red'" onMouseOut="this.style.backgroundColor='';this.style.color=''">
+			<td width="40%" align="left">{$vo.info}
+				<div id='h{$vo.varname}' style="color:#ccc;letter-spacing: 0px;font-size:12px;"></div>
+		  	</td>
+			<td width="60%" align="left">
+				<eq name='vo.type' value='textarea'>
+				<textarea class='css_textarea' name="{$vo.varname}" type="text" id="o{$vo.varname}" onFocus="h{$vo.varname}.style.color='blue';" onBlur="h{$vo.varname}.style.color='#ccc';" cols="50" rows="5" >{$vo.value}</textarea>  
+				</eq>
+				<eq name='vo.type' value='string'>
+				<input name="{$vo.varname}" type="text" id="o{$vo.varname}" onFocus="h{$vo.varname}.style.color='blue';" onBlur="h{$vo.varname}.style.color='#ccc';" value="{$vo.value}" style="width:300px;">
+				</eq>
+				<eq name='vo.type' value='radio'>
+				<input name="{$vo.varname}" type="radio" class="noborder" value="1" <eq name="vo.value" value='1'>checked</eq>>是<input name="{$vo.varname}" type="radio" class="noborder" value="0" <eq name="vo.value" value='0'>checked</eq>>否
+				</eq>
+				<eq name="vo.type" value="select">
+				<select class='css_select' name="{$vo.varname}" type="text" id="o{$vo.varname}" onFocus="h{$vo.varname}.style.color='blue';" onBlur="h{$vo.varname}.style.color='#ccc';" style="width:150px;">
+				{$vo.select}
+				</select>
+				</eq>
+		  </td>
+	  </tr>
+	  </volist>
+	<input type="hidden" name="type" value="{$type}"/>
+		<tr class=css_page_list>
+			<td height="30" colspan=2 align="center">
+		  <input name='Submit' type='submit' class="bnt" value=' 修 改 '>&nbsp;&nbsp; <input  type='button' class="bnt" value=' 返回 ' onclick="history.go(-1)"></td>
+		</tr>
+</table>
+   		</div>
+</div>
+</form>
+<div style="text-align:center;margin:10px;">
+<hr>
+<include file="Index:copy" />
+</div>
+</body>
+</html>

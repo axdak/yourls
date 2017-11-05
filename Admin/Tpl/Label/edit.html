@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type=text/css rel=stylesheet>
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<title>标签管理</title>
+</head>
+<body>
+<table width="95%" border="0"  align=center cellpadding="3" cellspacing="2" bgcolor="#FFFFFF" class="admintable">
+<form name="myform" action="{:U('Label/doedit')}" method=post>
+<tr> 
+    <td colspan="5" class="admintitle">修改标签</td></tr>
+<tr>
+  <td width="20%" bgcolor="#FFFFFF" class="b1_1">标题</td>
+  <td colspan=4 class=b1_1><input name="title" type="text" value="{$list.title}" size="40" maxlength="50"></td>
+</tr>
+<tr>
+  <td bgcolor="#FFFFFF" class="b1_1">内容</td>
+  <td colspan=4 class=b1_1><textarea name="content" cols="80" rows="10" id="Content">{$list.content}</textarea></td>
+</tr>
+<tr> 
+<td width="20%" class="b1_1"></td>
+<td colspan=4 class=b1_1><input name="id" type="hidden" value="{$list.id}"><input name="Submit" type="submit" class="bnt" value="提 交">&nbsp;&nbsp;<input type="button" onclick="history.go(-1);" class="bnt" value="返 回"></td>
+</tr>
+</form>
+</table>
+
+<div style="text-align:center;margin:10px;">
+<hr>
+<include file="Index:copy" />  
+</div>
+</body>
+</html>

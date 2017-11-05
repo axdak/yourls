@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>网站后台管理</title>
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type=text/css rel=stylesheet>
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<import file= "Admin.js.admin,Admin.js.Ajax,Admin.js.Jquery"/> 
+</head>
+<body>
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="30"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="15" height="30"><img src="__PUBLIC__/Admin/images/tab_03.gif" width="15" height="30" /></td>
+        <td width="24" background="__PUBLIC__/Admin/images/tab_05.gif"><img src="__PUBLIC__/Admin/images/311.gif" width="16" height="16" /></td>
+        <td width="1373" background="__PUBLIC__/Admin/images/tab_05.gif" class="title1">全局统计[<a href="{:U('Link/linkclean')}">统计清理</a>][<a href='javascript:window.history.go(-1);'>点此返回</a>]</td>
+        <td width="14"><img src="__PUBLIC__/Admin/images/tab_07.gif" width="14" height="30" /></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="9" background="__PUBLIC__/Admin/images/tab_12.gif">&nbsp;</td>
+        <td bgcolor="#f3ffe3">
+          <table border="0" align="center" cellpadding="3" cellspacing="1" class="admintable1">
+            <tr>
+              <td width="33%" align="left" bgcolor="#FFFFFF" style="height:30px;">当前在线：<font color="red">{$nowtimepv}</font> </td>
+              <td width="33%" align="left" bgcolor="#FFFFFF">十分钟内：<font color="red">{$tenminpv}</font> </td>
+              <td align="left" bgcolor="#FFFFFF">一小时内：<font color="red">{$hourtimepv}</font></td>
+            </tr>
+            <tr>
+              <td width="33%" align="left" bgcolor="#FFFFFF" style="height:30px;">总IP：<font color="red">{$totalip}</font>  </td>
+              <td width="33%" align="left" bgcolor="#FFFFFF">今日IP：<font color="red">{$todayip}</font> </td>
+              <td align="left" bgcolor="#FFFFFF">&nbsp;&nbsp;&nbsp;&nbsp;昨日IP：<font color="red">{$yesterdayip}</font></td>
+            </tr>
+			<tr>
+              <td width="33%" align="left" bgcolor="#FFFFFF" style="height:30px;">总PV：<font color="red">{$totalpv}</font>  </td>
+              <td width="33%" align="left" bgcolor="#FFFFFF">今日PV：<font color="red">{$todaypv}</font> </td>
+              <td align="left" bgcolor="#FFFFFF">&nbsp;&nbsp;&nbsp;&nbsp;昨日PV：<font color="red">{$yesterdaypv}</font></td>
+            </tr>
+          </table>
+		  
+          
+          <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+            
+			
+			<tr>
+			<td colspan='2'>
+				<table width="95%" border="0"  align=center cellpadding="3" cellspacing="2" bgcolor="#FFFFFF" class="admintable">  
+<tr> 
+  <td colspan="7" align=left class="admintitle">详细统计信息</td>
+</tr>
+    <tr bgcolor="#f1f3f5" style="font-weight:bold;">
+    <td width="5%" height="30" align="center" class="ButtonList">排序</td>
+    <td width="27%" align="center" class="ButtonList">来路URL</td>
+    <td width="28%" height="25" align="center" class="ButtonList">访问地址</td>
+    <td width="15%" height="25" align="center" class="ButtonList">客户IP</td>
+    <td width="15%" height="25" align="center" class="ButtonList">访问时间</td>    
+    <td width="10%" height="25" align="center" class="ButtonList">管理选项</td>    
+    </tr>
+	<volist name="list" id="vo"> 
+    <tr>
+    <td height="25" align="center" bgcolor="f7f7f7">{$i}</td>
+    <td height="25" align="center" bgcolor="f7f7f7"><notempty name="vo.from"><a href="{$vo.from}" target="_blank">{$vo.from}</a><else/>浏览器书签/直接访问</notempty></td>
+    <td height="25" align="center" bgcolor="f7f7f7"><a href='{:getroot()}{$alias}{$vo.url}' target='_blank'>{:getroot()}{$alias}{$vo.url}</a></td>
+    <td height="25" align="center" bgcolor="f7f7f7"><span class="td"><a target="_blank" href="http://www.ip138.com/ips138.asp?ip={$vo.visitip}">{$vo.visitip}</a></span></td>
+    <td height="25" align="center" bgcolor="f7f7f7">{$vo.visittime|date="Y-m-d H:i:s",###}</td>
+    <td align="center" bgcolor="f7f7f7"><a href="{:U('Link/vcount?url=');}{$alias}{$vo.url}">追踪</a><a href="{:U('Link/delvcount?id=')}{$vo.id}&backurl={:encodeurl();}">删除</a></td>
+    </tr>
+	</volist>
+<tr><td bgcolor="f7f7f7" colspan="7">
+<div id="page">
+	<ul style="text-align:left;">
+{$page}
+    </ul>
+</div>
+</td></tr></table>
+		
+			
+			
+			</td>
+			</tr>
+          </table>
+		  
+		  
+		  </td>
+        <td width="9" background="__PUBLIC__/Admin/images/tab_16.gif">&nbsp;</td>
+      </tr>
+    </table>
+	
+	</td>
+  </tr>
+	 <tr>
+    <td height="29"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="15" height="29"><img src="__PUBLIC__/Admin/images/tab_20.gif" width="15" height="29" /></td>
+        <td background="__PUBLIC__/Admin/images/tab_21.gif">&nbsp;</td>
+        <td width="14"><img src="__PUBLIC__/Admin/images/tab_22.gif" width="14" height="29" /></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+<input type='hidden' name='alias' value='{$alias}'>
+<div style="text-align:center;margin:10px;">
+<hr>
+<include file="Index:copy" /> 
+</div>
+</body>
+</html>

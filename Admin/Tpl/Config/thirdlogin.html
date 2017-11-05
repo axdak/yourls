@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type="text/css" rel="stylesheet">
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<import file="Admin.js.Jquery"/> 
+<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=green"></script>
+<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script>
+<script>
+function jconfirm(str,url)
+{
+   $.dialog.confirm(str,function (){window.location.href=url;});
+}
+</script>
+<style> 
+.classlist {float:left;margin:0;padding:0;}
+.classlist ul {float:left;margin:0;padding:0;}
+.classlist li {margin:0;padding:0;padding:3px 0;border-bottom:1px solid #ffffff;}
+.classlist li span {float:right;margin-top:-3px;}
+.classlist .bigclass {font-weight:bold;clear:both;list-style:none;margin:5px 0;}
+.classlist .yaoclass {font-weight:normal;list-style:none;padding-left:10px;}
+</style>
+<title>第三方登录配置</title>
+</head>
+<body>
+	
+<table border="0" align="center" cellpadding="3" cellspacing="2" bgcolor="#FFFFFF" class="admintable">
+  <tr>
+    <td colspan="6" class="admintitle">第三方登录配置 </td>
+  </tr>
+  <tr>
+    <td width="11%" height="25" align="center" bgcolor="#FFFFFF" class="ButtonList">ID</td>
+    <td width="21%" align="center" bgcolor="#FFFFFF" class="ButtonList">供应商</td>
+    <td width="28%" align="center" bgcolor="#FFFFFF" class="ButtonList">标识ID</td>
+    <td width="26%" align="center" bgcolor="#FFFFFF" class="ButtonList">开启状态</td>
+    <td width="14%" align="center" bgcolor="#FFFFFF" class="ButtonList">管理选项</td>
+  </tr>
+ <foreach name= "list" item= "vo">
+  <tr>
+    <td height="25" align="center" bgcolor="f7f7f7">{$vo.id}</td>
+    <td align="center" bgcolor="f7f7f7">{$vo.name}</td>
+    <td align="center" bgcolor="f7f7f7">{$vo.tid}</td>
+    <td align="center" bgcolor="f7f7f7"><a href="{:U('Config/ctype?tid=')}{$vo.tid}"><eq name='vo.status' value='1'><font color=green>已启用</font><else/><font color=red>已禁用</font></eq></a></td>
+	<td bgcolor="f7f7f7" style="padding-left:25px;"><a href="{:U('Config/index?type=')}{$vo.tid}">详细配置</a></td>
+  </tr>
+  </foreach>
+</table>
+<div style="text-align:center;margin:10px;">
+<hr>
+<include file="Index:copy" /> 
+</div>
+</body>
+</html>

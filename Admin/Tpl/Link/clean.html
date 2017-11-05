@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equtv="Content-Type" content="text/html; charset=utf-8" />
+<title>统计清理</title>
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type=text/css rel=stylesheet>
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<script>
+function getday(i)
+{
+	var day = document.getElementById('day');
+	day.value =i;
+}
+function chk()
+{
+	if(document.getElementById('day').value =='')
+	{
+		alert('请输入完整!');
+		document.getElementById('day').focus();
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+ 
+<table border="0"  cellspacing="1" cellpadding="3" height="1" class="admintable1">
+<tr>
+<td class="admintitle">统计清理</td>
+</tr><tr>
+<td height=30 bgcolor="#FFFFFF" class="td"><br><br><b>注意：</b>清理功能为执行数据库数据删除操作,一旦生效统计信息将无法还原,请慎重使用.<br><br>
+<br><br><form name='myform' id='myform' action='{:U('Link/dolinkclean')}' method='post' onsubmit="return chk()">
+清理多少天前数据? &nbsp;&nbsp;&nbsp;<input type='text' name="day" value='0' id='day'/><br/><br/>
+<input type="button" value="全部数据" class="bnt" onClick="getday(0)" />&nbsp;
+<input type="button" value="一天前数据" class="bnt" onClick="getday(1)" /> &nbsp;
+<input type="button" value="一周前数据" class="bnt" onClick="getday(7)" /> &nbsp;
+<input type="button" value="一月前数据" class="bnt" onClick="getday(30)" /> &nbsp;
+<br/><br/><br/>
+<input type="submit" value="执行清理" class="bnt" onclick="if(!confirm('确定要清理'+document.getElementById('day').value+'天前统计数据?'))return false;"/> &nbsp;&nbsp;&nbsp;
+<input type="button" value="返回" class="bnt" onClick="history.go(-1)" /> 
+</form>
+ <br /><br /><br />
+</td>
+</tr>
+</table>
+  <div style="text-align:center;margin:10px;">
+<hr>
+<include file="Index:copy" /> 
+</div>
+</body>
+</html>

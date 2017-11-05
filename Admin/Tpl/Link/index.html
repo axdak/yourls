@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>网站后台管理</title>
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type="text/css" rel="stylesheet">
+<link href="__PUBLIC__/Admin/images/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<import file= "Admin.js.admin,Admin.js.Ajax,Admin.js.Jquery"/> 
+</head>
+<body>
+<form name="form1" method="post" action="{:U('Link/index')}">
+<table width="95%" border="0" cellspacing="2" cellpadding="3"  align="center" class="admintable" style="margin-bottom:5px;">
+    <tr>
+      <td height="25" bgcolor="f7f7f7" style="text-align:left;">快速选择：
+        <SELECT onChange="javascript:window.open(this.options[this.selectedIndex].value,'main')"  size="1" name="s">
+		<option value="#">请选择</option>
+        <OPTION value="{:U('Link/index?all=1')}" <?php if($_GET['all']==1)echo ' selected';?>>全部的短址</OPTION>
+		<option value="#" disabled="disabled">-----------</option>
+        <OPTION value="{:U('Link/index?type=1')}" <?php if($_GET['type']==1)echo ' selected';?>>开启的短址</OPTION>
+        <OPTION value="{:U('Link/index?type=2')}" <?php if($_GET['type']==2)echo ' selected';?>>暂停的短址</OPTION>
+		<?php if($GLOBALS['linkcodeoff']==1):?>
+		<option value="#" disabled="disabled">-----------</option>
+		<OPTION value="{:U('Link/index?pwd=1')}" <?php if($_GET['pwd']==1)echo ' selected';?>>加密过的短址</OPTION>
+        <OPTION value="{:U('Link/index?pwd=2')}" <?php if($_GET['pwd']==2)echo ' selected';?>>未加密的短址</OPTION>
+		<?php endif;?>
+		<option value="#" disabled="disabled">-----------</option>
+        <OPTION value="{:U('Link/index?createtime=1')}" <?php if($_GET['createtime']==1)echo ' selected';?>>今日生成的短网址</OPTION>
+        <OPTION value="{:U('Link/index?createtime=2')}" <?php if($_GET['createtime']==2)echo ' selected';?>>昨日生成的短网址</OPTION>
+		<option value="#" disabled="disabled">-----------</option>
+        <OPTION value="{:U('Link/index?beizhu=1')}" <?php if($_GET['beizhu']==1)echo ' selected';?>>含有备注的短网址</OPTION>
+        <OPTION value="{:U('Link/index?beizhu=2')}" <?php if($_GET['beizhu']==2)echo ' selected';?>>不含备注的短网址</OPTION>
+		<option value="#" disabled="disabled">-----------</option>
+		<option value="{:U('Link/index?tplid=0')}">“无模板” 的短网址</option>
+		<volist name="tpllist" id="vo">
+		<option value="{:U('Link/index?tplid=')}{$vo.id}">“{$vo.title}” 的短网址</option>
+		</volist>
+      </SELECT></td>
+      <td bgcolor="f7f7f7" style="text-align:left;">
+        <input name="keywords" type="text" id="keyword" value="{$_POST['keywords']}" class="s26">&nbsp;&nbsp;
+		<select name="stype">
+		<option value="all" <?php if($_POST['stype']=='all') echo ' selected';?>>&nbsp;&nbsp;智能识别&nbsp;&nbsp;</option>
+		<option value="mid" <?php if($_POST['stype']=='mid') echo ' selected';?>>&nbsp;&nbsp;会员&nbsp;&nbsp;</option>
+		<option value="longurl" <?php if($_POST['stype']=='longurl') echo ' selected';?>>&nbsp;&nbsp;源地址&nbsp;&nbsp;</option>
+		<option value="tinyurl" <?php if($_POST['stype']=='tinyurl') echo ' selected';?>>&nbsp;&nbsp;短地址&nbsp;&nbsp;</option>
+		</select>&nbsp;&nbsp;
+        <input name="Submit2" type="submit" class="bnt" value="搜索">
+        </td>
+    </tr>
+</table>
+    </form>
+<form name="myform" method="POST" action="{:U('Link/delall')}">
+<table width="95%" border="0"  align=center cellpadding="3" cellspacing="2" bgcolor="#FFFFFF" class="admintable">
+<tr> 
+  <td colspan="<eq name="GLOBALS.seconddomainoff" value='1'>10<else/>9</eq>" align=left class="admintitle"><span><a href="{:U('Link/add')}">[添加网址]</a></span>网址管理
+  <?php if($_GET['all']==1)echo ' -> 全部的短地址';?>
+  <?php if($_GET['type']==1)echo ' -> 已开启的短地址';?>
+  <?php if($_GET['type']==2)echo ' -> 已暂停的短地址';?>
+  <?php if($_GET['createtime']==1) echo ' -> 今日生成的短网址';?>
+  <?php if($_GET['createtime']==2) echo ' -> 昨日生成的短地址';?>
+  <?php if($_GET['beizhu']==1) echo ' -> 含有备注的短网址';?>
+  <?php if($_GET['beizhu']==2) echo ' -> 不含备注的短网址';?>
+    <?php if($_GET['pwd']==1) echo ' -> 加密过的短网址';?>
+  <?php if($_GET['pwd']==2) echo ' -> 未加密的短网址';?>
+  <?php if($_GET['plugin']=='tbk') echo ' -> 淘宝客网址探测结果';?>
+  <?php if(isset($_GET['tplid']) && $_GET['tplid']==0)echo ' -> “无模板” 的短网址';?>
+		<volist name="tpllist" id="vo">
+		  <?php if(isset($_GET['tplid']) && $_GET['tplid']==$vo['id']) echo " -> “".$vo['title']."” 的短网址";?>
+		</volist>
+	  <?php if(isset($_POST['keywords']) && !empty($_POST['keywords']) )echo ' -> 搜索 “'.$_POST['keywords'].'”的结果';?>
+  </td>
+</tr>
+    <tr bgcolor="#f1f3f5" style="font-weight:bold;">
+    <td width="5%" height="30" align="center" class="ButtonList">&nbsp;</td>
+    <td width="20%" align="center" class="ButtonList">源地址</td>
+    <td width="10%" align="center" class="ButtonList">短地址</td>
+   <eq name="GLOBALS.seconddomainoff" value='1'><td width="10%" align="center" class="ButtonList">二级域名</td></eq>
+    <td width="10%" align="center" class="ButtonList">用户</td>
+    <td width="10%" align="center" class="ButtonList">时间</td>
+    <td width="10%" height="25" align="center" class="ButtonList">备注</td>
+    <td width="10%" height="25" align="center" class="ButtonList">模板</td>
+    <td width="20%" height="25" align="center" class="ButtonList">管理</td>    
+    </tr>
+	<volist name="list" id="vo"> 
+    <tr>
+    <td height="25" align="center" bgcolor="f7f7f7"><input type="checkbox" value="{$vo.id}" name="id[]" onClick="unselectall(this.form)" style="border:0;"></td>
+    <td height="25" bgcolor="f7f7f7"><a href="{$vo.longurl}" target="_blank">{$vo.longurl}</a></td>
+    <td height="25" align="center" bgcolor="f7f7f7"><a href="{:parseDomain()}{$vo.tinyurl}<notempty name="GLOBALS.suffix">.{$GLOBALS['suffix']}</notempty>" target="_blank">{:parseDomain()}{$vo.tinyurl}<notempty name="GLOBALS.suffix">.{$GLOBALS['suffix']}</notempty></a></td>
+	<eq name="GLOBALS.seconddomainoff" value='1'>
+	<td height="25" align="center" bgcolor="f7f7f7">
+	<a href="http://{$vo.tinyurl}.{$_SERVER['SERVER_NAME']}" target="_blank">{$vo.tinyurl}.{$_SERVER['SERVER_NAME']}</a>
+	</td>
+	</eq>
+    <td height="25" align="center" bgcolor="f7f7f7"><a href="{:U('Link/index?mid=')}{$vo.mid}"><empty name="vo.username">无<else/>{$vo.username}</empty></a></td>
+    <td height="25" align="center" bgcolor="f7f7f7">{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+    <td height="25" align="center" bgcolor="f7f7f7"><span class="td"><empty name="vo.beizhu">无<else/>{$vo.beizhu}</empty></span></td>
+   <td height="25" align="center" bgcolor="f7f7f7"><span class="td">{$vo.tplid|gettplname=###}</span></td>
+    <td align="center" bgcolor="f7f7f7"> <a href="javascript:;" onclick="ctype({$vo.id})"><eq name="vo.type" value='1'><i class="icon-play" title="已启用"></i><else/><i class="icon-pause" title="已禁用"></i></eq></a><eq name="GLOBALS.linkcodeoff" value='1'>&nbsp;<notempty name="vo.pwd"><a href="javascript:;" onclick="$.dialog.tips('当前短网址已加密！');" title="已加密"><i class="icon-lock"></i></a><else/><a href="javascript:;" onclick="$.dialog.tips('当前短网址未加密！');" title="未加密"><i class="icon-folder-open"></i></a></notempty></eq>
+    <eq name="GLOBALS.erweimaoff" value='1'><a href="javascript:;" onclick="erweima('{$vo.longurl}','{:parseDomain()}{$vo.tinyurl}','{$vo.tinyurl}')" ><i class="icon-qrcode" title="二维码"></i></a>&nbsp;</eq><neq name="GLOBALS.visitcount" value='0'><a href="{:U('Link/vcount?url=')}{$vo.tinyurl}"><i class="icon-search" title="统计"></i></a>&nbsp;</neq><a href="{:U('Link/edit?id=')}{$vo.id}"><i class="icon-edit" title="编辑"></i></a>&nbsp;<a  href="javascript:;" onClick="JavaScript:jconfirm('确定要删除该短网址？','{:U('Link/del?id=')}{$vo.id}')"><i class="icon-trash" title="删除"></i></a></td>
+    </tr>
+	</volist>
+<tr><td align="center" bgcolor="f7f7f7"><input name="Action" type="hidden"  value="Del"><input name="chkAll" type="checkbox" id="chkAll" onClick=CheckAll(this.form) value="checkbox" style="border:0"></td>
+  <td colspan="<eq name="GLOBALS.seconddomainoff" value='1'>9<else/>8</eq>" bgcolor="f7f7f7" style="text-align:left;">  <font color="red">模板指定：</font>
+    <select id="tplid" name="tplid">
+    <option value="-1">请选择模板</option>
+    <option value="0">无模板</option>
+	<volist name="tpllist" id="vo">
+	<option value="{$vo.id}">{$vo.title}</option>
+	</volist>
+	</select>
+    &nbsp;
+<input name="Del" type="submit" class="bnt" id="Del" value="指定">&nbsp;
+<input name="Del" type="submit" class="bnt" id="Del" value="启用">&nbsp;
+<input name="Del" type="submit" class="bnt" id="Del" value="禁用">&nbsp;
+<input name="Del" type="submit" class="bnt" id="Del" value="删除">&nbsp;
+<input name="Del" type="submit" class="bnt" id="Del" value="拉黑">&nbsp;
+<input name="_from" type="hidden" value="{:curPageURL()}">
+  </tr><tr><td bgcolor="f7f7f7" colspan="<eq name="GLOBALS.seconddomainoff" value='1'>9<else/>8</eq>">
+<div id="page">
+	<ul style="text-align:left;">
+{$page}
+    </ul>
+</div>
+</td></tr></table>
+</form>
+<div style="text-align:center;margin:10px;">
+<hr>
+<include file="Index:copy" /> 
+</div>
+</body>
+</html>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/jquery.artDialog.js?skin=green"></script>
+	<script charset="utf-8" src="__PUBLIC__/Common/artDialog/extend.js"></script> 
+	<script charset="utf-8" src="__PUBLIC__/Common/Jquery/jquery.zclip.min.js"></script>
+	<script type="text/javascript">
+    function copyToClipboard(meintext) {
+        if (window.clipboardData) {
+            window.clipboardData.setData("Text", meintext);
+			$.dialog.tips('复制成功！');
+        }
+        else
+		{
+			var xdialog = art.dialog({
+				init:function(){
+					$('#copyurl').zclip({
+						path:'__PUBLIC__/Common/Jquery/ZeroClipboard.swf',
+						copy:meintext,
+						setCSSEffects:false,
+						afterCopy:function(){
+							xdialog.close();
+							$.dialog.tips('复制成功！');
+						}
+					});
+				},
+				content:'<div class="well" ><button class="btn btn-large" id="copyurl" type="button">复制到剪切版</button></div>',
+				title: false,
+				cancel: false,
+				fixed: true,
+				lock: false,
+				button:[
+				{
+					name: '关闭'
+				}
+				]
+			});
+		}
+
+    }
+function docopy(id,content)
+{
+	$(id).click(function(){
+		copyToClipboard(content);
+	});
+}
+
+function ctype(i)
+{
+	$.post("{:U('Link/ctype')}", { id: i },
+   function(data){
+		window.location.reload(true);
+   });
+}
+	function jconfirm(str,url)
+{
+   $.dialog.confirm(str,function (){window.location.href=url;});
+}
+  function erweima(longurl,url,tinyurl)
+   {
+		url = url+'<notempty name="GLOBALS.suffix">.{$GLOBALS['suffix']}</notempty>';
+		var base  = '<img src="http://chart.apis.google.com/chart?cht=qr&&chs=200x200&chl='+url+'" /><br><br><p style="width:300px;overflow:hidden;">源地址: <a href="'+longurl+'" target="_blank">'+longurl+'</a></p>';
+		<eq name="GLOBALS.seconddomainoff" value='1'>
+		base = base +  '<br><p>二级域名：<a href="http://'+tinyurl+'.{$_SERVER['SERVER_NAME']}" target="_blank">'+tinyurl+'.{$_SERVER['SERVER_NAME']}</a>&nbsp;<a class="btn btn-mini" cid="seconddomain">复制</a></p>';
+		</eq>
+		var sharedata = '<a target="_blank" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+url+'&desc=我在{$GLOBALS['cfg_webname']}上生成了一个短网址，欢迎使用哦！&summary={$GLOBALS['cfg_webname']}&site={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/miniqq.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://service.weibo.com/share/share.php?url='+url+'"><img src="__PUBLIC__/User/img/miniweibo.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://share.v.t.qq.com/index.php?c=share&a=index&url='+url+'&title={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minitencent.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://widget.renren.com/dialog/share?resourceUrl='+url+'&title={$GLOBALS['cfg_webname']}&description={$GLOBALS.description}"><img src="__PUBLIC__/User/img/minirenren.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://t.163.com/article/user/checkLogin.do?info='+url+'&title={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minit163.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://shuo.douban.com/!service/share?href='+url+'&name={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minidouban.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://www.diandian.com/share?lo='+url+'&ti={$GLOBALS['cfg_webname']}&type=link"><img src="__PUBLIC__/User/img/minidiandian.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://tieba.baidu.com/f/commit/share/openShareApi?url='+url+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minibaidu.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://share.jianghu.taobao.com/share/addShare.htm?url='+url+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minitaobao.png"/></a>&nbsp;';
+		sharedata = sharedata +  '<a target="_blank" href="http://t.sohu.com/third/post.jsp?url='+url+'&title={$GLOBALS['cfg_webname']}&desc={$GLOBALS['cfg_webname']}"><img src="__PUBLIC__/User/img/minisohu.png"/></a>&nbsp;';
+		$.dialog({
+		title: '生成结果',
+		init:function(){
+		docopy("a[cid='tinyurl']",url);
+		docopy("a[cid='seconddomain']",'http://'+tinyurl+'.{$_SERVER['SERVER_NAME']}');
+		},
+		content: '<div class="well well-large">'+base+'<br><p>短网址：<a href="javascript:;" cid="tinyurl" >'+ url+'</a>&nbsp;<a href="javascript:;" cid="tinyurl" class="btn-mini btn">复制</a></p><br><p>分享到：'+sharedata+'</p></div>',
+		okVal: '下载二维码',
+		 ok: function (){
+			$.dialog.tips('正在转向...');
+                window.location.href='{:U('Public/downfile?url=')}'+url;
+		 },
+		cancel: true,
+		lock: true
+		});
+   }
+</script>

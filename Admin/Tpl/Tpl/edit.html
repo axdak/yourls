@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type=text/css rel=stylesheet>
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<style> 
+.classlist {float:left;margin:0;padding:0;}
+.classlist ul {float:left;margin:0;padding:0;}
+.classlist li {margin:0;padding:0;padding:3px 0;border-bottom:1px solid #ffffff;}
+.classlist li span {float:right;margin-top:-3px;}
+.classlist .bigclass {font-weight:bold;clear:both;list-style:none;margin:5px 0;}
+.classlist .yaoclass {font-weight:normal;list-style:none;padding-left:10px;}
+</style>
+<title>管理员管理</title>
+</head>
+<body>
+<script language="javascript">
+function chk(){
+
+	return ck('title','模板名称');
+	return ck('content','模板内容');
+}
+function ck(a,title)
+{
+	if(document.getElementById(a).value==""){
+		alert(title+'不能为空!');
+		document.getElementById(a).focus();
+		return false;
+	}
+	return true;
+}
+</script>
+<table border="0" align="center" cellpadding="3" cellspacing="2" bgcolor="#FFFFFF" class="admintable">
+  <tr>
+    <td colspan="2" class="admintitle"> 编辑模板</td>
+  </tr>
+  <form action="{:U('Tpl/doedit')}" method="post" onsubmit="return chk();">
+  <tr>
+    <td width="20%" height="25" bgcolor="f7f7f7">&nbsp;模板名称：</td>
+    <td height="25" bgcolor="f7f7f7"><input name="title" type="text" size="30" id="title" maxlength="16" value="{$list.title}"></td>
+  </tr>
+  <tr>
+    <td height="25" bgcolor="f7f7f7">&nbsp;模板内容：</td>
+    <td height="25" bgcolor="f7f7f7"><textarea name="content" style="width:100%;height:500px;">{$list.content}</textarea></td>
+  </tr>
+  <input type="hidden" name="id" value="{$list.id}"/>
+  <tr>
+    <td height="25" colspan="2" align="center" class="tabletd2"><input type="submit" name="Submit" class="bnt" value="编辑">&nbsp;&nbsp;<input name="Submit22" type="button" class="bnt" onClick="history.go(-1)"  value="返 回"></td>
+  </tr>
+  </form>
+</table>
+<div style="text-align:center;margin:10px;">
+<hr>
+<include file="Index:copy" /> 
+</div>
+</body>
+</html>
