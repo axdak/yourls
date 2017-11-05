@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>安装程序 - 短网址<?php echo $verMsg; ?></title>
+<link rel="shortcut icon" href="myfav.ico" type="image/x-icon" />
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<div class="top">
+	<div class="top-logo">
+	</div>
+	<div class="top-link">
+		<ul>
+			<li><a href="http://www.pengyong.info" target="_blank">官方网站</a></li>
+			<li><a href="http://www.74q.net" target="_blank">演示站点</a></li>
+			<li><a href="http://www.pengyong.info" target="_blank">联系作者</a></li>
+		</ul>
+	</div>
+	<div class="top-version">
+		<!-- 版本信息 -->
+		<h2>DWZ<?php echo $verMsg; ?></h2>
+	</div>
+</div>
+
+<div class="main">
+	<div class="pleft">
+		<dl class="setpbox t1">
+			<dt>安装步骤</dt>
+			<dd>
+				<ul>
+					<li class="now">许可协议</li>
+					<li>环境检测</li>
+					<li>参数配置</li>
+					<li>正在安装</li>
+					<li>安装完成</li>
+				</ul>
+			</dd>
+		</dl>
+	</div>
+	<div class="pright">
+		<div class="pr-title"><h3>阅读许可协议</h3></div>
+		<div class="pr-agreement">
+				<p>您正在安装的是DWZ短网址-UTF-8编码 V 3.0 运营版</p>
+				<p>版权所有 (c)2011-2013，pengyong.info 保留所有权利。 </p>
+				<p>感谢您选择DWZ短网址（以下简称DWZ），DWZ是彭勇（个人）开发的一款短网址解析系统，当前是运营版，现在已经开源免费了！</p>
+				<p>DWZ 的官方维护网址是： <a href="http://www.pengyong.info" target="_blank">pengyong.info</a> </p>
+				<p>DWZ 的官方演示网址是： <a href="http://www.74q.net" target="_blank">74q.net</a> </p>
+				<p>为了使你正确并合法的使用本软件，请你在使用前务必阅读清楚下面的协议条款：</p>
+			<strong>一、本授权协议适用且仅适用于 DWZ3.x.x 版本，DWZ官方对本授权协议的最终解释权。</strong>
+			<strong>二、协议许可的权利 </strong>
+				<p>1、您可以在完全遵守本最终用户授权协议的基础上，本软件开源免费！ </p>
+				<p>2、您可以在协议规定的约束和限制范围内修改 DWZ 源代码或界面风格以适应您的网站要求。 </p>
+				<p>3、您拥有使用本软件构建的网站全部内容所有权，并独立承担与这些内容的相关法律义务。 </p>
+				
+			<strong>三、协议规定的约束和限制 </strong>
+				<p>DWZ短网址运营版已经开源免费了！</p>
+				<p><b>协议发布时间：</b> 2011年11月07日</p>
+				<p><b>版本最新更新：</b> 2013年11月07日 By pengyong.info</p>
+		</div>
+		<div class="btn-box">
+			<input name="readpact" type="checkbox" id="readpact" value="" /><label for="readpact"><strong class="fc-690 fs-14">我已经阅读并同意此协议</strong></label>
+			<input type="button" class="btn-next" value="继续" onclick="document.getElementById('readpact').checked ?window.location.href='index.php?step=2' : alert('您必须同意软件许可协议才能安装！');" />
+		</div>
+	</div>
+</div>
+
+<div class="foot">
+
+</div>
+
+</body>
+</html>

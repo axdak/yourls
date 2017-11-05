@@ -1,0 +1,138 @@
+CREATE TABLE IF NOT EXISTS `#@__admin` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `name` char(15) NOT NULL,
+  `password` char(32) NOT NULL,
+  `logintime` int(10) unsigned NOT NULL,
+  `loginip` char(15) NOT NULL,
+  `status` enum('正常','禁止','超级') NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM ;
+
+CREATE TABLE IF NOT EXISTS `#@__config` (
+  `id` smallint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `varname` varchar(20) NOT NULL DEFAULT '',
+  `info` varchar(100) NOT NULL DEFAULT '',
+  `groupid` smallint(6) NOT NULL DEFAULT '1',
+  `type` varchar(10) NOT NULL DEFAULT 'string',
+  `value` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `#@__feedback` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `title` char(50) NOT NULL,
+  `content` text NOT NULL,
+  `addtime` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `#@__info` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `mid` int(10) unsigned NOT NULL,
+  `tplid` int(10) unsigned NOT NULL DEFAULT '0',
+  `longurl` text NOT NULL,
+  `tinyurl` varchar(10) NOT NULL,
+  `addtime` int(10) NOT NULL,
+  `pwd` char(32) NOT NULL,
+  `beizhu` varchar(255) NOT NULL,
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tinyurl` (`tinyurl`),
+  KEY `addtime` (`addtime`),
+  KEY `mid` (`mid`),
+  KEY `tplid` (`tplid`),
+  KEY `type` (`type`),
+  FULLTEXT KEY `longurl` (`longurl`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `#@__label` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` char(50) NOT NULL,
+  `content` text NOT NULL,
+  `addtime` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `#@__member` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` char(16) NOT NULL,
+  `password` char(32) NOT NULL,
+  `email` char(30) NOT NULL,
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `activekey` char(32) NOT NULL,
+  `logintime` int(10) unsigned NOT NULL,
+  `regtime` int(10) unsigned NOT NULL,
+  `loginip` char(15) NOT NULL,
+  `money` int(10) unsigned NOT NULL DEFAULT '0',
+  `rankid` int(10) unsigned NOT NULL DEFAULT '1',
+  `sex` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `province` char(10) NOT NULL,
+  `city` char(10) NOT NULL,
+  `qq` char(15) NOT NULL,
+  `birthday` char(10) NOT NULL,
+  `avtar` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`),
+  KEY `rankid` (`rankid`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `#@__member_rank` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `rankname` varchar(30) NOT NULL,
+  `rankmoney` int(10) unsigned NOT NULL,
+  `rankimg` varchar(30) NOT NULL,
+  `groupid` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `groupid` (`groupid`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `#@__tpl` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `title` char(60) NOT NULL COMMENT '标题',
+  `content` mediumtext NOT NULL COMMENT '模版内容',
+  `pubdate` int(10) unsigned NOT NULL COMMENT '生成时间',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '=1 普通 =2 错误页',
+  PRIMARY KEY (`id`),
+  KEY `pubdate` (`pubdate`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `#@__visit` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `url` varchar(10) NOT NULL,
+  `visitip` char(15) NOT NULL,
+  `visittime` int(10) unsigned NOT NULL,
+  `from` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `visittime` (`visittime`),
+  KEY `visitip` (`visitip`),
+  KEY `url` (`url`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `#@__baddomain` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `domain` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `domain_2` (`domain`),
+  KEY `domain` (`domain`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `#@__badinfo` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `longurl` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  FULLTEXT KEY `longurl` (`longurl`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `#@__domain` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `uid` int(10) unsigned NOT NULL COMMENT '用户id',
+  `domain` char(30) NOT NULL COMMENT '域名',
+  `pubdate` int(10) unsigned NOT NULL COMMENT '更新时间',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `domain` (`domain`),
+  KEY `uid` (`uid`,`pubdate`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM;
